@@ -12,18 +12,19 @@ function* registerUserInfoSaga(action){
     try {
         let state = yield select();
         let obj = action.userData;
-        let response = yield call(postApiCall, Api.apiToRegister, obj );
+        let firebaseToken = yield call(AsyncStorage.getItem, 'firebaseToken');
+        obj['token'] = firebaseToken;
+        let response = yield call(postApiCall, Api.apiToInsertUserInfo, obj );
         console.log("RESPONSE", response);
-        if(response.userId){
-            yield put(setData({ 'userInfo' : response }));
-            yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(response));
-            Actions.verifyMobileNumber();
-        }else if(response.err){
-            alert(response.err);
+        if(response.success){
+            let userInfo = response.body;
+            yield put(setData({ userInfo }));
+            yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(userInfo));
+            Actions.home();
+        }else{
+            alert(response.message);
             return;
         }
-        //let data = yield call(AsyncStorage.getItem, 'userInfo'); 
-        //console.log(data, "DATA");
     } catch (e) {
         alert(JSON.stringify(e));
     }
@@ -71,13 +72,18 @@ function* verifyEmailSaga(action){
         };
         let response = yield call(postApiCall, Api.apiToVerifyEmail, obj );
         console.log("RESPONSE", response);
-        if(response.userId){
-            yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(response));
-            Actions.HomeDetails();
-        }else if(response.err){
-            alert(response.err);
-            //Actions.registerationPage();
+        if(!response.success){
+            alert(response.message);
             return;
+        }else{
+            let userInfo = response.body;
+            if(!userInfo){
+                alert(response.message);
+                return;
+            }else{
+                yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(response));
+                Actions.home();
+            }
         }
     }catch(err){
         alert(JSON.stringify(err));

@@ -35,67 +35,30 @@ class Login extends Component {
 
   onSubmit = () => {
     let { phoneNumber, otp, selectPrivacyPolicy, loginType, email, password } = this.state;
-    if(loginType === 'phone'){
-      if(!phoneNumber){
-        alert("Please enter valid phone number");
-        return;
-      }
-      if(phoneNumber.length != 10){
-        alert("Please enter valid 10 digit number");
-        return;
-      }
-      if(!otp){
-        alert("Please enter otp");
-        return;
-      }
-      if(otp.length != 6){
-        alert("Please enter valid otp");
-        return;
-      }
-      if(!selectPrivacyPolicy){
-        alert("Please select the privacy policy");
-        return;
-      }
-      this.props.verifyOTP(phoneNumber, otp);
-    }else {
-      if(!email){
-        alert("Please enter email");
-        return;
-      } 
-      var atposition = email.indexOf("@");  
-      var dotposition = email.lastIndexOf(".");  
-      if (atposition < 1 || dotposition < atposition+2 || dotposition+2 >= email.length){  
-        alert("Please enter a valid e-mail address");  
-        return false;  
-      }  
-      if(!password){
-        alert("Please enter password");
-        return;
-      }
-      if(password.length < 6){
-        alert("Password length should be atleast 6 digit length");
-        return;
-      }
-      if(!selectPrivacyPolicy){
-        alert("Please select the privacy policy");
-        return;
-      }
-      this.props.verifyEmail(email, password);
+    if(!email){
+      alert("Please enter email");
+      return;
+    } 
+    var atposition = email.indexOf("@");  
+    var dotposition = email.lastIndexOf(".");  
+    if (atposition < 1 || dotposition < atposition+2 || dotposition+2 >= email.length){  
+      alert("Please enter a valid e-mail address");  
+      return false;  
+    }  
+    if(!password){
+      alert("Please enter password");
+      return;
     }
+    if(password.length < 6){
+      alert("Password length should be atleast 6 digit length");
+      return;
+    }
+    if(!selectPrivacyPolicy){
+      alert("Please select the privacy policy");
+      return;
+    }
+    this.props.verifyEmail(email, password);
   }
-
-  sendOTP = () => {
-    let { phoneNumber } = this.state;
-    if (!phoneNumber) {
-      alert("Please enter a phone number");
-      return;
-    }
-    if (phoneNumber.length != 10) {
-      alert("Please enter a valid phone number");
-      return;
-    }
-    this.props.sendOTP(phoneNumber);
-  };
 
   toggleScreenType = type => {
     this.setState({

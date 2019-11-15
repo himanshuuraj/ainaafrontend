@@ -18,14 +18,15 @@ export default class App extends React.Component {
 
   state = {
     isReady : false,
-    notification: {}
+    notification: {},
+    screenType : 'loginPage'
   };
 
   componentWillMount() {
     this.loadFonts();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     registerForPushNotificationsAsync();
     // Handle notifications that are received or selected while the app
     // is open. If the app was closed and then opened by tapping the
@@ -33,6 +34,13 @@ export default class App extends React.Component {
     // this function will fire on the next tick after the app starts
     // with the notification data.
     this._notificationSubscription = Notifications.addListener(this._handleNotification);
+    let userInfo = await AsyncStorage.getItem("userInfo");
+    if(userInfo){
+      userInfo = JSON.parse(userInfo);
+      this.setState({
+        screenType : 'home'
+      });
+    }
   }
 
   async loadFonts() {
@@ -57,16 +65,20 @@ export default class App extends React.Component {
         <Router>
         <Stack key="root">
           <Scene
+            type="reset"
             hideNavBar={true}
             key="loginPage"
             component={LoginPage}
             title="LoginPage"
+            initial={this.state.screenType == 'loginPage'}
           />
           <Scene
+            type="reset"
             hideNavBar={true}
             key="home"
             component={Home}
             title="Home"
+            initial={this.state.screenType == 'home'}
           />
           <Scene
             hideNavBar={true}
