@@ -10,7 +10,7 @@ import {
 
 function* registerUserInfoSaga(action){
     try {
-        //let state = yield select();
+        let state = yield select();
         let obj = action.userData;
         let response = yield call(postApiCall, Api.apiToRegister, obj );
         console.log("RESPONSE", response);
