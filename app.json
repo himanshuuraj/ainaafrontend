@@ -27,6 +27,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.ainaa.ainaa",
       "googleServicesFile": "./google-services.json"
     }
   }
