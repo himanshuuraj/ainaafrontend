@@ -28,21 +28,6 @@ export const registerUser = userData => {
     }
 }
 
-export const sendOTP = phoneNumber => {
-    return {
-        type : SEND_OTP,
-        phoneNumber
-    }
-}
-
-export const verifyOTP = (phoneNumber, otp) => {
-    return {
-        type : VERIFY_OTP,
-        phoneNumber,
-        otp
-    }
-}
-
 export const verifyEmail = (email, password) => {
     return {
         type : VERIFY_EMAIL,
