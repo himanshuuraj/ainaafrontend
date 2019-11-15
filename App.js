@@ -10,29 +10,45 @@ import LoginPage from "./src/pages/login";
 import RegisterationPage from "./src/pages/registeration";
 import SplashScreen from "./src/pages/splashScreen";
 import Home from "./src/pages/home";
-import { AppLoading } from "expo";
+import { AppLoading, Notifications } from "expo";
 import * as Font from "expo-font";
+import registerForPushNotificationsAsync from './registerForPushNotificationsAsync';
 
 export default class App extends React.Component {
 
   state = {
-    isReady : false
+    isReady : false,
+    notification: {}
   };
 
   componentWillMount() {
     this.loadFonts();
   }
 
+  componentDidMount() {
+    registerForPushNotificationsAsync();
+    // Handle notifications that are received or selected while the app
+    // is open. If the app was closed and then opened by tapping the
+    // notification (rather than just tapping the app icon to open it),
+    // this function will fire on the next tick after the app starts
+    // with the notification data.
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);
+  }
+
   async loadFonts() {
     await Font.loadAsync({
       Roboto: require("./node_modules/native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("./node_modules/native-base/Fonts/Roboto_medium.ttf"),
-      //Ionicons: require('./node_modules/@expo/vector-icons/Ionicons.js')
+      Roboto_medium: require("./node_modules/native-base/Fonts/Roboto_medium.ttf")
     });
     this.setState({ isReady: true });
   }
 
+  _handleNotification = (notification) => {
+    this.setState({notification: notification});
+  };
+
   render() {
+
     if (!this.state.isReady) {
       return <AppLoading />;
     }

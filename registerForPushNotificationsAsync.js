@@ -1,5 +1,6 @@
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
+import { AsyncStorage } from "react-native"; 
 
 const PUSH_ENDPOINT = 'http://192.168.1.107:3000/userInfo/5dccedfcff4ce30024aaa87c/update';
 
@@ -25,6 +26,7 @@ export default async function registerForPushNotificationsAsync() {
 
   // Get the token that uniquely identifies this device
   let token = await Notifications.getExpoPushTokenAsync();
+  AsyncStorage.setItem('firebaseToken', token);
 
   console.log(token, "TOKEN");
 
