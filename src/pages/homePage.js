@@ -7,8 +7,9 @@ import {
 } from "../global/util";
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
-import { StatusBar, TextInput, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, TextInput, StyleSheet, Text, View, Dimensions, StatusBar } from 'react-native';
 import HeaderSection from "./../components/header";
+import Camera from "./../components/camera";
 
 class HomePage extends Component {
 
@@ -18,6 +19,62 @@ class HomePage extends Component {
 
   constructor(props){
     super(props);
+  }
+
+  getAwsImageUrl = (imageUrl) => {
+    let imageList = this.state.imageList;
+    imageList.push({ uri : imageUrl });
+    this.setState({ imageList });
+  }
+
+  addImage = () => {
+    return (
+      <View style={{ ...viewObj }}>
+          <Text style={{
+            ...textObj
+          }}>Pick Gallery</Text>
+        <View style={{
+            paddingHorizontal : 8,
+            paddingVertical : 16
+          }}>
+          <TouchableOpacity
+            style={{
+              borderWidth : 1,
+              borderColor : Color.black,
+              borderRadius : 4,
+              justifyContent : 'center',
+              alignItems : 'center',
+              marginVertical : 8,
+              height : 36
+            }}
+            onPress={e => {
+              this.setState({ showCamera : true });
+            }}
+          >
+            <Text style={{ fontSize : 14 }}>ADD IMAGE FROM CAMERA</Text>
+          </TouchableOpacity>
+          <Camera type={'gallery'} getAwsImageUrl={this.getAwsImageUrl} /> 
+        </View>
+      </View>
+    );
+  }
+
+  createPost = () => {
+    return (
+      <View style={{ height : 50, borderWidth : StyleSheet.hairlineWidth, borderColor : 'black', flexDirection : 'row', backgroundColor : '#fff',
+            marginVertical : 16, borderRadius : 8, alignItems : 'center', justifyContent : 'flex-start', paddingLeft : 8 }}>
+        {/* {
+          this.addImage()
+        } */}
+        <Thumbnail
+          small 
+          size={20}
+          source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/1/14/Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg'}} />
+        <Text style={{ marginLeft : 8 }}>
+          Write your post here ...
+        </Text>
+      </View>
+    )
   }
 
   renderFeedCard(feed, index){
@@ -72,9 +129,12 @@ class HomePage extends Component {
           paddingHorizontal : 16,
           backgroundColor : Color.backgroundThemeColor
         }}>
-            {
-                [...Array(10)].map((feed, index) => this.renderFeedCard(feed, index))
-            }
+          {
+            this.createPost()
+          }
+          {
+              [...Array(10)].map((feed, index) => this.renderFeedCard(feed, index))
+          }
         </Content>
       </Container>
     );
@@ -93,3 +153,19 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+
+let viewObj = {
+  marginTop : 16, 
+  borderWidth: StyleSheet.hairlineWidth, 
+  borderRadius : 4
+}
+
+let textObj = {
+  position : 'absolute',
+  top : -8,
+  left : 8,
+  fontSize : 12,
+  backgroundColor : Color.white,
+  paddingHorizontal : 2,
+  backgroundColor : Color.backgroundThemeColor
+}

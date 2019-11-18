@@ -4,7 +4,38 @@ import {
 } from "./constants";
 
 let reducer = {
-    test : {}
+    test : {},
+
+     // errorModal
+     errorModalInfo : {
+        showModal : false,
+        title : "",
+        message : "",
+        buttonText : "",
+        onClose : ""
+    },
+
+    // confirmModal
+    confirmModalInfo : {
+        showModal : false,
+        title : "",
+        message : "",
+        primaryText : "",
+        primaryAction : "",
+        secondaryText : "",
+        secondaryAction : ""
+    },
+
+    // carousel
+    carouselData : {
+        show : false,
+        imageList : []
+    },
+
+    // loading
+    loading : {
+        show : false
+    },
 };
 
 export default (state = reducer, action) => {

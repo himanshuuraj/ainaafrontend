@@ -13,13 +13,17 @@ import Home from "./src/pages/home";
 import { AppLoading, Notifications } from "expo";
 import * as Font from "expo-font";
 import registerForPushNotificationsAsync from './registerForPushNotificationsAsync';
+import Loading from "./src/components/loading";
+import ConfirmModal from "./src/components/confirmModal";
+import ErrorModal from "./src/components/ErrorModal";
+import PostModal from "./src/components/postModal";
 
 export default class App extends React.Component {
 
   state = {
     isReady : false,
     notification: {},
-    screenType : 'loginPage'
+    screenType : 'loginPage' // 'loginPage'
   };
 
   componentWillMount() {
@@ -63,7 +67,7 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <Router>
-        <Stack key="root">
+          <Stack key="root">
           <Scene
             type="reset"
             hideNavBar={true}
@@ -94,6 +98,10 @@ export default class App extends React.Component {
           />
           </Stack>
         </Router>
+        <Loading />
+        <ErrorModal />
+        <ConfirmModal />
+        <PostModal />
       </Provider>
     );
   }
