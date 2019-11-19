@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { TouchableOpacity, TextInput, StyleSheet, Text, View } from 'react-native';
 import HeaderSection from "./../components/header";
 import Camera from "./../components/camera";
-import { setData } from "./../redux/action";
+import { setData, getAllPosts } from "./../redux/action";
 
 class HomePage extends Component {
 
@@ -21,7 +21,7 @@ class HomePage extends Component {
   constructor(props){
     super(props);
   }
-
+  
   getAwsImageUrl = (imageUrl) => {
     let imageList = this.state.imageList;
     imageList.push({ uri : imageUrl });
@@ -158,7 +158,8 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    setData
+    setData,
+    getAllPosts
   }, dispatch);
 }
 

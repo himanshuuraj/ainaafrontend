@@ -11,3 +11,5 @@ export const apiToDeleteUserInfo = HOST + "/userInfo/{id}/update";
 export const apiToVerifyEmail = HOST + "/userInfo/login";
 
 export const apiToCreatePost = HOST + "/post/create";
+
+export const apiToGetAllPosts = HOST + "/post/start/0/count/100"

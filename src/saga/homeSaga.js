@@ -1,5 +1,5 @@
 import { call, put, takeEvery, takeLatest, select } from 'redux-saga/effects';
-import { REGISTER_USER_INFO, SEND_OTP, VERIFY_OTP, VERIFY_EMAIL, CREATE_POST } from "./../redux/constants";
+import { REGISTER_USER_INFO, SEND_OTP, VERIFY_OTP, VERIFY_EMAIL, CREATE_POST, GET_ALL_POSTS } from "./../redux/constants";
 import { getApiCall, postApiCall } from "./../global/request";
 import * as Api from "./../global/api";
 import {AsyncStorage} from 'react-native';
@@ -78,10 +78,26 @@ function* createPostSaga(action){
     }
 }
 
+function* getAllPostsSaga(action){
+    try{
+        let response = yield call(getApiCall, Api.apiToGetAllPosts);
+        console.log("RESPONSE", response);
+        if(!response.success){
+            yield put(setData({ errorModalInfo : { showModal : true, message : "Error in reteriving posts", title : "Success" } }));
+        }else{
+            yield put(setData({ postModal : { show : false } }));
+            yield put(setData({ allPosts : response.body }));
+        }
+    }catch(err){
+        alert(JSON.stringify(err));
+    }
+}
+
 const mySaga = [
     takeLatest( REGISTER_USER_INFO, registerUserInfoSaga ),
     takeLatest( VERIFY_EMAIL, verifyEmailSaga),
-    takeLatest( CREATE_POST, createPostSaga)
+    takeLatest( CREATE_POST, createPostSaga),
+    takeLatest( GET_ALL_POSTS, getAllPostsSaga )
 ];
 
 export default mySaga;

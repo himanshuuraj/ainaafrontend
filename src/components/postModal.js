@@ -68,7 +68,7 @@ class PostModal extends Component{
                 backgroundColor : "rgba(52, 52, 52, 0.6)",
                 justifyContent : 'center',
                 alignItems : 'center',
-                zIndex : 999,
+                zIndex : 1,
                 top : 0,
                 left : 0,
                 height,
@@ -117,6 +117,7 @@ class PostModal extends Component{
                                 marginRight : 8
                             }}
                             onPress={e => {
+                                this.props.setData({ postModal: { show : false }});
                             }}
                         >
                             <Text style={{ fontSize : 14, color : Color.black }}>
@@ -134,6 +135,16 @@ class PostModal extends Component{
                                 borderRadius : 4
                             }}
                             onPress={() => {
+                                let text = this.state.text;
+                                if(!text){
+                                    this.props.setData({ 
+                                        errorModalInfo : {
+                                            showModal : true,
+                                            message : "Please enter text", 
+                                        }
+                                    });
+                                    return;
+                                }
                                 this.props.createPost({ text : this.state.text });
                             }}>
                             <GradientView h={'100%'}>

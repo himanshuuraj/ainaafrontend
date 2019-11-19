@@ -100,9 +100,9 @@ export default class App extends React.Component {
           </Stack>
         </Router>
         <Loading />
-        <ErrorModal />
         <ConfirmModal />
         <PostModal />
+        <ErrorModal />
         {/* <Camera type="camera" showCamera={this.state.showCamera} hideCamera={this.hideCamera} getAwsImageUrl={this.getAwsImageUrl} /> */}
       </Provider>
     );

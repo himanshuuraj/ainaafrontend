@@ -3,7 +3,8 @@ import {
     REGISTER_USER_INFO,
     UPDATE_DATA,
     CREATE_POST,
-    VERIFY_EMAIL
+    VERIFY_EMAIL,
+    GET_ALL_POSTS
 } from "./constants";
 
 export const testAction = payload => {
@@ -39,5 +40,11 @@ export const createPost = post => {
     return {
         type : CREATE_POST,
         post
+    }
+}
+
+export const getAllPosts = () => {
+    return {
+        type : GET_ALL_POSTS
     }
 }

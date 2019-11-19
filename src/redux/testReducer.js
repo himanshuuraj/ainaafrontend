@@ -44,7 +44,9 @@ let reducer = {
     camera : {
         show : false,
         type : 'gallery'
-    }
+    },
+
+    allPosts : []
 };
 
 export default (state = reducer, action) => {
