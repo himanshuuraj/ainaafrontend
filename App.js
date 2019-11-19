@@ -17,6 +17,7 @@ import Loading from "./src/components/loading";
 import ConfirmModal from "./src/components/confirmModal";
 import ErrorModal from "./src/components/ErrorModal";
 import PostModal from "./src/components/postModal";
+import Camera from "./src/components/camera";
 
 export default class App extends React.Component {
 
@@ -102,6 +103,7 @@ export default class App extends React.Component {
         <ErrorModal />
         <ConfirmModal />
         <PostModal />
+        <Camera type="camera" showCamera={this.state.showCamera} hideCamera={this.hideCamera} getAwsImageUrl={this.getAwsImageUrl} />
       </Provider>
     );
   }

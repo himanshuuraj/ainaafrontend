@@ -7,9 +7,10 @@ import {
 } from "../global/util";
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
-import { TouchableOpacity, TextInput, StyleSheet, Text, View, Dimensions, StatusBar } from 'react-native';
+import { TouchableOpacity, TextInput, StyleSheet, Text, View } from 'react-native';
 import HeaderSection from "./../components/header";
 import Camera from "./../components/camera";
+import { setData } from "./../redux/action";
 
 class HomePage extends Component {
 
@@ -61,8 +62,16 @@ class HomePage extends Component {
 
   createPost = () => {
     return (
-      <View style={{ height : 50, borderWidth : StyleSheet.hairlineWidth, borderColor : 'black', flexDirection : 'row', backgroundColor : '#fff',
-            marginVertical : 16, borderRadius : 8, alignItems : 'center', justifyContent : 'flex-start', paddingLeft : 8 }}>
+      <TouchableOpacity style={{ height : 50, borderWidth : StyleSheet.hairlineWidth, borderColor : 'black', flexDirection : 'row', backgroundColor : '#fff',
+            marginVertical : 16, borderRadius : 8, alignItems : 'center', justifyContent : 'flex-start', paddingLeft : 8 }}
+            onPress={() => {
+              this.props.setData({
+                postModal : {
+                  show : true
+                }
+              });
+            }}
+            >
         {/* {
           this.addImage()
         } */}
@@ -73,7 +82,7 @@ class HomePage extends Component {
         <Text style={{ marginLeft : 8 }}>
           Write your post here ...
         </Text>
-      </View>
+      </TouchableOpacity>
     )
   }
 
@@ -149,6 +158,7 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
+    setData
   }, dispatch);
 }
 

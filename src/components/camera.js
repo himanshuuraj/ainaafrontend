@@ -116,10 +116,11 @@ class CameraPage extends Component {
   }
 
   render() {
+    let camera = this.props.camera;
     const { hasCameraPermission } = this.state;
     if (hasCameraPermission === null) {
       return null;
-    }else if(this.props.showCamera && this.props.type == "camera"){
+    }else if(this.props.camera.show && this.props.camera.type == "camera"){
       return (
         <View style={{ position : 'absolute', height : screenHeight, width : screenWidth, top: StatusBar.currentHeight, left : 0 }}>
             <View style={{flex : 1}}>
@@ -195,7 +196,7 @@ class CameraPage extends Component {
            </View>
         </View>
       );
-    }else if(this.props.type == "gallery"){
+    }else if(this.props.camera.type == "gallery"){
       return (
         <TouchableOpacity
             style={{
@@ -219,6 +220,7 @@ class CameraPage extends Component {
 
 function mapStateToProps(state, props) {
   return {
+    camera : state.testReducer.camera || {}
   }
 }
 

@@ -1,26 +1,63 @@
 import React, {Component}  from 'react';
-import { View, Text, Dimensions, TouchableOpacity, StatusBar } from "react-native";
+import { View, Text, Dimensions, TouchableOpacity, StatusBar, ScrollView, StyleSheet } from "react-native";
 import { Color } from "../global/util";
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import { setData } from "../redux/action";
 import GradientView from "./gradientView";
+import {
+    Form, Textarea
+} from "native-base";
+import { Camera } from './../components/camera';
 
 let { width, height } = Dimensions.get('window');
 width = width;
 
 
 class PostModal extends Component{
+
+    getAwsImageUrl = (imageUrl) => {
+        let imageList = this.state.imageList;
+        imageList.push({ uri : imageUrl });
+        this.setState({ imageList });
+    }
+
+    addImage = () => {
+        return (
+          <View style={{ ...viewObj }}>
+              <Text style={{
+                ...textObj
+              }}>Pick Gallery</Text>
+            <View style={{
+                paddingHorizontal : 8,
+                paddingVertical : 16
+              }}>
+              <TouchableOpacity
+                style={{
+                  borderWidth : 1,
+                  borderColor : Color.black,
+                  borderRadius : 4,
+                  justifyContent : 'center',
+                  alignItems : 'center',
+                  marginVertical : 8,
+                  height : 36
+                }}
+                onPress={e => {
+                  this.props.setData({ showCamera : true });
+                }}
+              >
+                <Text style={{ fontSize : 14 }}>ADD IMAGE FROM CAMERA</Text>
+              </TouchableOpacity>
+              <Camera type={'gallery'} getAwsImageUrl={this.getAwsImageUrl} /> 
+            </View>
+          </View>
+        );
+      }
+
     render(){
-        let confirmModalInfo = this.props.confirmModalInfo || {};
-        if(!confirmModalInfo.showModal)
+        let postModal = this.props.postModal || {};
+        if(!postModal.show)
             return null;
-        confirmModalInfo.title = confirmModalInfo.title || "Please Confirm";
-        confirmModalInfo.message = confirmModalInfo.message;
-        confirmModalInfo.primaryText = confirmModalInfo.primaryText || "CONFIRM";
-        confirmModalInfo.primaryAction = confirmModalInfo.primaryAction ? confirmModalInfo.primaryAction : () => this.props.setData({ confirmModalInfo: { showModal : false }});
-        confirmModalInfo.secondaryText = confirmModalInfo.secondaryText || "CANCEL";
-        confirmModalInfo.secondaryAction = confirmModalInfo.secondaryAction ? confirmModalInfo.secondaryAction : () => this.props.setData({ confirmModalInfo: { showModal : false }});
         return (
             <View style={{ 
                 position : 'absolute', 
@@ -38,38 +75,27 @@ class PostModal extends Component{
                                 justifyContent : 'center',  padding: 16,
                                 borderWidth : 1, borderColor : Color.themeColor
                     }}>
-                    <Text style={{ fontSize : 18, fontWeight : 'bold', textAlign : 'center' }}>
-                        { confirmModalInfo.title }
+                    <Text style={{ fontSize : 18, fontWeight : 'bold' }}>
+                        POST HERE
                     </Text>
+                    <Form style={{ fontSize : 16, textAlign : 'center', marginTop : 10  }}>
+                        <Textarea rowSpan={5} bordered placeholder="Your post here ...." style={{ padding : 10 }} />
+                    </Form>
+                    <ScrollView horizontal style={{ flexDirection : 'row', marginTop : 16 }}>
+                        {
+                            [...Array(15)].map(item => (
+                                <View style={{ width : 50, height : 50, backgroundColor : 'red', marginRight : 10 }}>
+
+                                </View>
+                            ))
+                        }
+                    </ScrollView>
+
                     {
-                        confirmModalInfo.message ? (
-                            <Text style={{ fontSize : 16, textAlign : 'center', marginTop : 10  }}>
-                                { confirmModalInfo.message }
-                            </Text>
-                        ) : null
+                        this.addImage()
                     }
+
                     <View style={{ flexDirection : 'row'}}>
-                        <TouchableOpacity
-                            style={{
-                                flex : 1,
-                                justifyContent : 'center',
-                                marginTop : 20,
-                                marginBottom : 5,
-                                height : 36,
-                                width : '100%',
-                                borderRadius : 4,
-                                marginRight : 8
-                            }}
-                            onPress={e => {
-                                confirmModalInfo.primaryAction();
-                            }}
-                        >
-                            <GradientView h={'100%'}>
-                                <Text style={{ fontSize : 14, color : Color.themeFontColor, fontWeight : 'bold', textAlign : 'center' }}>
-                                    { confirmModalInfo.primaryText }
-                                </Text>
-                            </GradientView>
-                        </TouchableOpacity>
                         <TouchableOpacity
                             style={{
                                 flex : 1,
@@ -81,15 +107,35 @@ class PostModal extends Component{
                                 backgroundColor : Color.white,
                                 borderWidth : 1,
                                 justifyContent : 'center',
-                                alignItems : 'center'
+                                alignItems : 'center',
+                                marginRight : 8
                             }}
                             onPress={e => {
-                                confirmModalInfo.secondaryAction();
                             }}
                         >
                             <Text style={{ fontSize : 14, color : Color.black }}>
-                                { confirmModalInfo.secondaryText }
+                                CANCEL
                             </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                flex : 1,
+                                justifyContent : 'center',
+                                marginTop : 20,
+                                marginBottom : 5,
+                                height : 36,
+                                width : '100%',
+                                borderRadius : 4
+                            }}
+                            onPress={e => {
+                                
+                            }}
+                        >
+                            <GradientView h={'100%'}>
+                                <Text style={{ fontSize : 14, color : Color.themeFontColor, fontWeight : 'bold', textAlign : 'center' }}>
+                                    POST
+                                </Text>
+                            </GradientView>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -100,7 +146,7 @@ class PostModal extends Component{
 
 function mapStateToProps(state, props) {
     return {
-        confirmModalInfo : state.testReducer.confirmModalInfo
+        postModal : state.testReducer.postModal
     }
   }
   
@@ -111,3 +157,20 @@ function mapStateToProps(state, props) {
   }
   
   export default connect(mapStateToProps, mapDispatchToProps)(PostModal);
+
+  let viewObj = {
+    marginTop : 16, 
+    borderWidth: StyleSheet.hairlineWidth, 
+    borderRadius : 4
+  }
+  
+  let textObj = {
+    position : 'absolute',
+    top : -8,
+    left : 8,
+    fontSize : 12,
+    backgroundColor : Color.white,
+    paddingHorizontal : 2,
+    backgroundColor : Color.backgroundThemeColor
+  }
+  

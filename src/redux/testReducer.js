@@ -36,6 +36,15 @@ let reducer = {
     loading : {
         show : false
     },
+
+    postModal : {
+        show : true
+    },
+
+    camera : {
+        show : false,
+        type : 'gallery'
+    }
 };
 
 export default (state = reducer, action) => {
