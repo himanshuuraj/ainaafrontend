@@ -81,7 +81,7 @@ class PostModal extends Component{
                     <Form style={{ fontSize : 16, textAlign : 'center', marginTop : 10  }}>
                         <Textarea rowSpan={5} bordered placeholder="Your post here ...." style={{ padding : 10 }} />
                     </Form>
-                    <ScrollView horizontal style={{ flexDirection : 'row', marginTop : 16 }}>
+                    {/* <ScrollView horizontal style={{ flexDirection : 'row', marginTop : 16 }}>
                         {
                             [...Array(15)].map(item => (
                                 <View style={{ width : 50, height : 50, backgroundColor : 'red', marginRight : 10 }}>
@@ -89,11 +89,11 @@ class PostModal extends Component{
                                 </View>
                             ))
                         }
-                    </ScrollView>
+                    </ScrollView> */}
 
-                    {
+                    {/* {
                         this.addImage()
-                    }
+                    } */}
 
                     <View style={{ flexDirection : 'row'}}>
                         <TouchableOpacity

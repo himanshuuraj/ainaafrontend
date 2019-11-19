@@ -38,7 +38,7 @@ let reducer = {
     },
 
     postModal : {
-        show : true
+        show : false
     },
 
     camera : {
