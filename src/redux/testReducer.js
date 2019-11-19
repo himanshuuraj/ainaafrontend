@@ -41,6 +41,10 @@ let reducer = {
         show : false
     },
 
+    commentModal : {
+        show : true
+    },
+
     camera : {
         show : false,
         type : 'gallery'
