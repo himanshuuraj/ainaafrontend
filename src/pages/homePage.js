@@ -93,7 +93,7 @@ class HomePage extends Component {
             <Left>
                 <Thumbnail source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/1/14/Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg'}} />
                 <Body>
-                    <Text>Himanshu Raj</Text>
+                    <Text>{feed.firstName + " " + feed.lastName}</Text>
                     <Text note>JNV Araria (2005- 2012)</Text>
                 </Body>
             </Left>
@@ -101,7 +101,7 @@ class HomePage extends Component {
             <CardItem>
                 <Body>
                     <Text>
-                        Anyone in Mumbai ???
+                        { feed.text }
                     </Text>
                 </Body>
             </CardItem>
@@ -142,7 +142,7 @@ class HomePage extends Component {
             this.createPost()
           }
           {
-              [...Array(10)].map((feed, index) => this.renderFeedCard(feed, index))
+              this.props.allPosts.map((feed, index) => this.renderFeedCard(feed, index))
           }
         </Content>
       </Container>
@@ -152,7 +152,8 @@ class HomePage extends Component {
 
 function mapStateToProps(state, props) {
   return {
-      data : state.testReducer.test
+      data : state.testReducer.test,
+      allPosts : state.testReducer.allPosts || []
   }
 }
 
