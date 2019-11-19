@@ -2,8 +2,7 @@ import {
     TEST_SAGA,
     REGISTER_USER_INFO,
     UPDATE_DATA,
-    SEND_OTP,
-    VERIFY_OTP,
+    CREATE_POST,
     VERIFY_EMAIL
 } from "./constants";
 
@@ -33,5 +32,12 @@ export const verifyEmail = (email, password) => {
         type : VERIFY_EMAIL,
         email,
         password
+    }
+}
+
+export const createPost = post => {
+    return {
+        type : CREATE_POST,
+        post
     }
 }

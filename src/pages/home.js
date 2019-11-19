@@ -17,6 +17,8 @@ import ProfilePage from "./profilePage";
 import SettingsPage from "./settingsPage";
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
+import { AsyncStorage } from "react-native"; 
+import { setData } from "./../redux/action";
 
 class Home extends Component {
 
@@ -26,6 +28,14 @@ class Home extends Component {
 
   constructor(props){
     super(props);
+  }
+
+  async componentDidMount(){
+    let userInfo = await AsyncStorage.getItem("userInfo");
+    if(userInfo){
+      userInfo = JSON.parse(userInfo);
+      this.props.setData({ userInfo });
+    }
   }
 
   getContent = () => {
@@ -114,6 +124,7 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
+    setData
   }, dispatch);
 }
 

@@ -1,5 +1,5 @@
 import { call, put, takeEvery, takeLatest, select } from 'redux-saga/effects';
-import { REGISTER_USER_INFO, SEND_OTP, VERIFY_OTP, VERIFY_EMAIL } from "./../redux/constants";
+import { REGISTER_USER_INFO, SEND_OTP, VERIFY_OTP, VERIFY_EMAIL, CREATE_POST } from "./../redux/constants";
 import { getApiCall, postApiCall } from "./../global/request";
 import * as Api from "./../global/api";
 import {AsyncStorage} from 'react-native';
@@ -55,9 +55,33 @@ function* verifyEmailSaga(action){
     }
 }
 
+function* createPostSaga(action){
+    try{
+        let post = action.post;
+        let userInfo = yield call(AsyncStorage.getItem, 'userInfo');
+        userInfo = JSON.parse(userInfo);
+        post["email"] = userInfo.email;
+        post["firstName"] = userInfo.firstName;
+        post["lastName"] = userInfo.lastName;
+        post["userId"] = userInfo._id;
+        let response = yield call(postApiCall, Api.apiToCreatePost, post);
+        console.log("RESPONSE", response);
+        if(!response.success){
+            yield put(setData({ errorModalInfo : { showModal : true, message : "Error in creating post", title : "Success" } }));
+        }else{
+            yield put(setData({ postModal : { show : false } }));
+            yield put(setData({ errorModalInfo : { showModal : true, message : "Post created Successfully", title : "Success" } }));
+            Actions.home();
+        }
+    }catch(err){
+        alert(JSON.stringify(err));
+    }
+}
+
 const mySaga = [
     takeLatest( REGISTER_USER_INFO, registerUserInfoSaga ),
-    takeLatest( VERIFY_EMAIL, verifyEmailSaga)
+    takeLatest( VERIFY_EMAIL, verifyEmailSaga),
+    takeLatest( CREATE_POST, createPostSaga)
 ];
 
 export default mySaga;

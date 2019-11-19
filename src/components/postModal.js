@@ -1,9 +1,9 @@
 import React, {Component}  from 'react';
-import { View, Text, Dimensions, TouchableOpacity, StatusBar, ScrollView, StyleSheet } from "react-native";
+import { View, Text, Dimensions, TouchableOpacity, StatusBar, ScrollView, StyleSheet, ToouchableOpacity } from "react-native";
 import { Color } from "../global/util";
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
-import { setData } from "../redux/action";
+import { setData, createPost } from "../redux/action";
 import GradientView from "./gradientView";
 import {
     Form, Textarea
@@ -15,6 +15,10 @@ width = width;
 
 
 class PostModal extends Component{
+
+    state = {
+        text : ""
+    }
 
     getAwsImageUrl = (imageUrl) => {
         let imageList = this.state.imageList;
@@ -79,7 +83,9 @@ class PostModal extends Component{
                         POST HERE
                     </Text>
                     <Form style={{ fontSize : 16, textAlign : 'center', marginTop : 10  }}>
-                        <Textarea rowSpan={5} bordered placeholder="Your post here ...." style={{ padding : 10 }} />
+                        <Textarea 
+                            onChangeText={text => this.setState({ text })}
+                            rowSpan={5} bordered placeholder="Your post here ...." style={{ padding : 10 }} />
                     </Form>
                     {/* <ScrollView horizontal style={{ flexDirection : 'row', marginTop : 16 }}>
                         {
@@ -127,10 +133,9 @@ class PostModal extends Component{
                                 width : '100%',
                                 borderRadius : 4
                             }}
-                            onPress={e => {
-                                
-                            }}
-                        >
+                            onPress={() => {
+                                this.props.createPost({ text : this.state.text });
+                            }}>
                             <GradientView h={'100%'}>
                                 <Text style={{ fontSize : 14, color : Color.themeFontColor, fontWeight : 'bold', textAlign : 'center' }}>
                                     POST
@@ -152,7 +157,8 @@ function mapStateToProps(state, props) {
   
   function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-      setData
+      setData,
+      createPost
     }, dispatch);
   }
   

@@ -9,3 +9,5 @@ export const SEND_OTP = "SEND_OTP";
 export const VERIFY_OTP = "VERIFY_OTP";
 
 export const VERIFY_EMAIL = "VERIFY_EMAIL";
+
+export const CREATE_POST = "CREATE_POST";
