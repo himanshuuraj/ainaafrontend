@@ -14,9 +14,10 @@ import {
 import LoginFormComponent from './../components/loginFormComponent';
 import RegisterationComponent from "./../components/registerationComponent";
 import ImageLogoComponent from "./../components/imageLogoComponent";
-import { sendOTP, verifyOTP, verifyEmail } from "./../redux/action";
+import { sendOTP, verifyOTP, verifyEmail, setData } from "./../redux/action";
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
+import GradientView from "./../components/gradientView";
 
 class Login extends Component {
 
@@ -36,25 +37,50 @@ class Login extends Component {
   onSubmit = () => {
     let { phoneNumber, otp, selectPrivacyPolicy, loginType, email, password } = this.state;
     if(!email){
-      alert("Please enter email");
+      this.props.setData({
+        errorModalInfo : {
+          showModal : true,
+          message : "Please enter email"
+        }
+      });
       return;
     } 
     var atposition = email.indexOf("@");  
     var dotposition = email.lastIndexOf(".");  
     if (atposition < 1 || dotposition < atposition+2 || dotposition+2 >= email.length){  
-      alert("Please enter a valid e-mail address");  
+      this.props.setData({
+        errorModalInfo : {
+          showModal : true,
+          message : "Please enter a valid e-mail address"
+        }
+      });
       return false;  
     }  
     if(!password){
-      alert("Please enter password");
+      this.props.setData({
+        errorModalInfo : {
+          showModal : true,
+          message : "Please enter password"
+        }
+      });
       return;
     }
     if(password.length < 6){
-      alert("Password length should be atleast 6 digit length");
+      this.props.setData({
+        errorModalInfo : {
+          showModal : true,
+          message : "Password length should be atleast 6 digit length"
+        }
+      });
       return;
     }
     if(!selectPrivacyPolicy){
-      alert("Please select the privacy policy");
+      this.props.setData({
+        errorModalInfo : {
+          showModal : true,
+          message : "Please select the privacy policy"
+        }
+      });
       return;
     }
     this.props.verifyEmail(email, password);
@@ -69,19 +95,20 @@ class Login extends Component {
   render() {
     return (
       <Container>
-      <Content style={{
-        backgroundColor : Color.themeColor,
-        paddingLeft : "4%",
-        width : "100%",
-        paddingRight : "4%"
-      }}>
-        <KeyboardAvoidingView behavior={Platform.select({android: "padding", ios: 'padding'})}
-         enabled>
-          <ImageLogoComponent/>
-          <LoginFormComponent sendOTP={this.sendOTP} onSubmit={this.onSubmit} updateData={this.updateData} screenType='login'/>
-          <RegisterationComponent toggleScreenType={this.toggleScreenType} screenType='login'/>
-        </KeyboardAvoidingView>
-      </Content>
+        <GradientView flex={1} v>
+          <Content style={{
+            paddingLeft : "4%",
+            width : "100%",
+            paddingRight : "4%"
+          }}>
+            <KeyboardAvoidingView behavior={Platform.select({android: "padding", ios: 'padding'})}
+            enabled>
+              <ImageLogoComponent/>
+              <LoginFormComponent sendOTP={this.sendOTP} onSubmit={this.onSubmit} updateData={this.updateData} screenType='login'/>
+              <RegisterationComponent toggleScreenType={this.toggleScreenType} screenType='login'/>
+            </KeyboardAvoidingView>
+          </Content>
+        </GradientView>
       </Container>
     );
   }
@@ -97,7 +124,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     sendOTP,
     verifyOTP,
-    verifyEmail
+    verifyEmail,
+    setData
   }, dispatch);
 }
 

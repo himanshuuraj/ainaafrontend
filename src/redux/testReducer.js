@@ -42,7 +42,7 @@ let reducer = {
     },
 
     commentModal : {
-        show : true
+        show : false
     },
 
     camera : {

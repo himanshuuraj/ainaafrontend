@@ -7,21 +7,20 @@ import { Actions } from 'react-native-router-flux';
 import {
     setData, verifyEmail
 } from "./../redux/action";
+import { registerUserInfo, createPost, getAllPosts } from "./userInfo";
 
 function* registerUserInfoSaga(action){
     try {
         let obj = action.userData;
         let firebaseToken = yield call(AsyncStorage.getItem, 'firebaseToken');
         obj['token'] = firebaseToken;
-        let response = yield call(postApiCall, Api.apiToInsertUserInfo, obj );
-        console.log("RESPONSE", response);
-        if(response.success){
-            let userInfo = response.body;
+        let response = yield call(registerUserInfo, action.userData)
+        console.log(response);
+        if(response){
+            let userInfo = { ...action.userData, userId : response };
             yield put(setData({ userInfo }));
             yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(userInfo));
             Actions.home();
-        }else{
-            alert(response.message);
         }
     } catch (e) {
         alert(JSON.stringify(e));
@@ -63,12 +62,14 @@ function* createPostSaga(action){
         post["email"] = userInfo.email;
         post["firstName"] = userInfo.firstName;
         post["lastName"] = userInfo.lastName;
-        post["userId"] = userInfo._id;
-        let response = yield call(postApiCall, Api.apiToCreatePost, post);
+        post["userId"] = userInfo.userId;
+        post["createdAt"] = new Date().getTime()
+        let response = yield call(createPost, post);
         console.log("RESPONSE", response);
-        if(!response.success){
+        if(!response){
             yield put(setData({ errorModalInfo : { showModal : true, message : "Error in creating post", title : "Success" } }));
         }else{
+            let post = { ...post, postId : response };
             yield put(setData({ postModal : { show : false } }));
             yield put(setData({ errorModalInfo : { showModal : true, message : "Post created Successfully", title : "Success" } }));
             Actions.home();
@@ -80,13 +81,13 @@ function* createPostSaga(action){
 
 function* getAllPostsSaga(action){
     try{
-        let response = yield call(getApiCall, Api.apiToGetAllPosts);
-        console.log("RESPONSE", response);
-        if(!response.success){
+        let response = yield call(getAllPosts);
+        if(!response){
             yield put(setData({ errorModalInfo : { showModal : true, message : "Error in reteriving posts", title : "Success" } }));
         }else{
+            console.log(response);
             yield put(setData({ postModal : { show : false } }));
-            yield put(setData({ allPosts : response.body }));
+            yield put(setData({ allPosts : response }));
         }
     }catch(err){
         alert(JSON.stringify(err));

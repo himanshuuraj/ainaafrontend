@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import LoginFormComponent from '../components/loginFormComponent';
 import RegisterationComponent from "../components/registerationComponent";
 import ImageLogoComponent from "./../components/imageLogoComponent";
+import GradientView from "./../components/gradientView";
 import {
   registerUser
 } from "./../redux/action";
@@ -87,19 +88,20 @@ class Registeration extends Component {
   render() {
     return (
       <Container>
-      <Content style={{
-        backgroundColor : Color.themeColor,
-        paddingLeft : "4%",
-        width : "100%",
-        paddingRight : "4%"
-      }}>
-        <KeyboardAvoidingView behavior={Platform.select({android: "padding", ios: 'padding'})}
-         enabled>
-         <ImageLogoComponent/>
-          <LoginFormComponent onSubmit={this.onSubmit} updateData={this.updateData} screenType="registeration"/>
-          <RegisterationComponent screenType="registeration"/>
-        </KeyboardAvoidingView>
-      </Content>
+        <GradientView flex={1} v>
+          <Content style={{
+            paddingLeft : "4%",
+            width : "100%",
+            paddingRight : "4%"
+          }}>
+            <KeyboardAvoidingView behavior={Platform.select({android: "padding", ios: 'padding'})}
+            enabled>
+            <ImageLogoComponent/>
+              <LoginFormComponent onSubmit={this.onSubmit} updateData={this.updateData} screenType="registeration"/>
+              <RegisterationComponent screenType="registeration"/>
+            </KeyboardAvoidingView>
+          </Content>
+        </GradientView>
       </Container>
     );
   }
