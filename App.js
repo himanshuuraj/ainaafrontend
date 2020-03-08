@@ -18,6 +18,7 @@ import ConfirmModal from "./src/components/confirmModal";
 import ErrorModal from "./src/components/ErrorModal";
 import PostModal from "./src/components/postModal";
 import CommentModal from "./src/components/commentModal";
+import JNVList from "./src/components/jnvList";
 
 export default class App extends React.Component {
 

@@ -6,7 +6,7 @@ import {
   Icon,
   Button
 } from "native-base";
-import { View, TextInput, Image, TouchableOpacity } from "react-native";
+import { View, TextInput, Image, TouchableOpacity, TouchableHighlight } from "react-native";
 import {
   Color,
   viewObj,
@@ -15,12 +15,38 @@ import {
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import HeaderSection from "./../components/header";
+import JNVList from "./../components/jnvList";
+import { setData } from "./../redux/action";
+import GradientView from "./../components/gradientView";
 
 class ProfilePage extends Component {
 
   state = {
-    activeScreen  : 'home'
+    activeScreen  : 'home',
+    userData : {
+      currentAddress : {},
+      permanentAddress : {},
+      jnv : {}
+    }
   };
+
+  hideShowPickArea = () => {
+    this.props.setData({
+      pickJNV : {
+        show : false
+    }
+    });
+  }
+
+  selectedArea = jnv => {
+    this.updateData({ jnv });
+  }
+
+  updateData = obj => {
+    let userData = this.state.userData;
+    userData = { ...userData, ...obj };
+    this.setState({userData});
+  } 
   
   permanentAddress = () => {
     return (
@@ -40,7 +66,14 @@ class ProfilePage extends Component {
               style={{
                 paddingLeft : 16
               }}
-              placeholder="Belmonte Heights"/>
+              placeholder="Belmonte Heights"
+              onChangeText={line1 => {
+                let permanentAddress = this.state.userData.permanentAddress;
+                permanentAddress.line1 = line1;
+                this.updateData({ permanentAddress });
+              }}
+              value={this.state.userData.permanentAddress.line1}
+              />
             <Text>Line2</Text>
             <TextInput
               multiline
@@ -49,7 +82,14 @@ class ProfilePage extends Component {
               style={{
                 paddingLeft : 16
               }}
-              placeholder="18th B Main Road"/>
+              placeholder="18th B Main Road"
+              onChangeText={line2 => {
+                let permanentAddress = this.state.userData.permanentAddress;
+                permanentAddress.line2 = line2;
+                this.updateData({ permanentAddress });
+              }}
+              value={this.state.userData.permanentAddress.line2}
+              />
             <Text>LandMark</Text>
             <TextInput
               underlineColorAndroid="#bbb"
@@ -57,7 +97,14 @@ class ProfilePage extends Component {
                 paddingLeft : 16,
                 paddingBottom : 4
               }}
-              placeholder="near Cult.fit Gym"/>
+              placeholder="near Cult.fit Gym"
+              onChangeText={landmark => {
+                let permanentAddress = this.state.userData.permanentAddress;
+                permanentAddress.landmark = landmark;
+                this.updateData({ permanentAddress });
+              }}
+              value={this.state.userData.permanentAddress.landmark}
+              />
             <Text>City</Text>
             <TextInput
               underlineColorAndroid="#bbb"
@@ -65,7 +112,14 @@ class ProfilePage extends Component {
                 paddingLeft : 16,
                 paddingBottom : 4
               }}
-              placeholder="Patna"/>
+              placeholder="Patna"
+              onChangeText={city => {
+                let permanentAddress = this.state.userData.permanentAddress;
+                permanentAddress.city = city;
+                this.updateData({ permanentAddress });
+              }}
+              value={this.state.userData.permanentAddress.city}
+              />
             <Text>State</Text>
             <TextInput
               underlineColorAndroid="#bbb"
@@ -73,7 +127,14 @@ class ProfilePage extends Component {
                 paddingLeft : 16,
                 paddingBottom : 4
               }}
-              placeholder="Bihar"/>
+              placeholder="Bihar"
+              onChangeText={state => {
+                let permanentAddress = this.state.userData.permanentAddress;
+                permanentAddress.state = state;
+                this.updateData({ permanentAddress });
+              }}
+              value={this.state.userData.permanentAddress.state}
+              />
             <Text>PinCode</Text>
             <TextInput
               underlineColorAndroid="#bbb"
@@ -82,7 +143,14 @@ class ProfilePage extends Component {
                 paddingBottom : 4
               }}
               placeholder="560034"
-              keyboardType='numeric'/>
+              keyboardType='numeric'
+              onChangeText={pinCode => {
+                let permanentAddress = this.state.userData.permanentAddress;
+                permanentAddress.pinCode = pinCode;
+                this.updateData({ permanentAddress });
+              }}
+              value={this.state.userData.permanentAddress.pinCode}
+              />
           </View>
       </View>
     );
@@ -106,7 +174,13 @@ class ProfilePage extends Component {
               style={{
                 paddingLeft : 16
               }}
-              placeholder="Belmonte Heights"/>
+              placeholder="Belmonte Heights"
+              onChangeText={line1 => {
+                let currentAddress = this.state.userData.currentAddress;
+                currentAddress.line1 = line1;
+                this.updateData({ currentAddress });
+              }}
+              value={this.state.userData.currentAddress.line1}/>
             <Text>Line2</Text>
             <TextInput
               multiline
@@ -115,7 +189,14 @@ class ProfilePage extends Component {
               style={{
                 paddingLeft : 16
               }}
-              placeholder="18th B Main Road"/>
+              placeholder="18th B Main Road"
+              onChangeText={line2 => {
+                let currentAddress = this.state.userData.currentAddress;
+                currentAddress.line2 = line2;
+                this.updateData({ currentAddress });
+              }}
+              value={this.state.userData.currentAddress.line2}
+              />
             <Text>LandMark</Text>
             <TextInput
               underlineColorAndroid="#bbb"
@@ -123,7 +204,14 @@ class ProfilePage extends Component {
                 paddingLeft : 16,
                 paddingBottom : 4
               }}
-              placeholder="near Cult.fit Gym"/>
+              placeholder="near Cult.fit Gym"
+              onChangeText={landmark => {
+                let currentAddress = this.state.userData.currentAddress;
+                currentAddress.landmark = landmark;
+                this.updateData({ currentAddress });
+              }}
+              value={this.state.userData.currentAddress.landmark}
+              />
             <Text>City</Text>
             <TextInput
               underlineColorAndroid="#bbb"
@@ -131,7 +219,14 @@ class ProfilePage extends Component {
                 paddingLeft : 16,
                 paddingBottom : 4
               }}
-              placeholder="Patna"/>
+              placeholder="Patna"
+              onChangeText={city => {
+                let currentAddress = this.state.userData.currentAddress;
+                currentAddress.city = city;
+                this.updateData({ currentAddress });
+              }}
+              value={this.state.userData.currentAddress.city}
+              />
             <Text>State</Text>
             <TextInput
               underlineColorAndroid="#bbb"
@@ -139,7 +234,14 @@ class ProfilePage extends Component {
                 paddingLeft : 16,
                 paddingBottom : 4
               }}
-              placeholder="Bihar"/>
+              placeholder="Bihar"
+              onChangeText={state => {
+                let currentAddress = this.state.userData.currentAddress;
+                currentAddress.state = state;
+                this.updateData({ currentAddress });
+              }}
+              value={this.state.userData.currentAddress.state}
+              />
             <Text>PinCode</Text>
             <TextInput
               underlineColorAndroid="#bbb"
@@ -148,7 +250,14 @@ class ProfilePage extends Component {
                 paddingBottom : 4
               }}
               placeholder="560034"
-              keyboardType='numeric'/>
+              keyboardType='numeric'
+              onChangeText={pinCode => {
+                let currentAddress = this.state.userData.currentAddress;
+                currentAddress.pinCode = pinCode;
+                this.updateData({ currentAddress });
+              }}
+              value={this.state.userData.currentAddress.pinCode}
+              />
           </View>
       </View>
     );
@@ -172,7 +281,12 @@ class ProfilePage extends Component {
               style={{
                 paddingLeft : 16
               }}
-              placeholder="9934258424"/>
+              placeholder="1234567890"
+              onChangeText={phone => {
+                this.updateData({ phone });
+              }}
+              keyboardType='numeric'
+              value={this.state.userData.phone}/>
             <Text>Email</Text>
             <TextInput
               multiline
@@ -181,7 +295,11 @@ class ProfilePage extends Component {
               style={{
                 paddingLeft : 16
               }}
-              placeholder="hraj3116@gmail.com"/>
+              placeholder="hraj3116@gmail.com"
+              onChangeText={email => {
+                this.updateData({ email });
+              }}
+              value={this.state.userData.email}/>
           </View>
       </View>
     );
@@ -198,32 +316,62 @@ class ProfilePage extends Component {
             paddingVertical : 16
           }}>
             <Text>Navodaya Name</Text>
-            <TextInput 
+            <TouchableHighlight onPress={() => {
+                  this.props.setData({
+                    pickJNV : {
+                      show : true
+                    }
+                  });
+                }}>
+              <TextInput 
+                multiline
+                numberOfLines={2}
+                underlineColorAndroid="#bbb"
+                style={{
+                  paddingLeft : 16
+                }}
+                editable={false}
+                placeholder="JNV Katihar"
+                value={this.state.userData.jnv.area}
+                />
+              </TouchableHighlight>
+            <Text>Admission Year</Text>
+            <TextInput
               multiline
               numberOfLines={2}
+              keyboardType='numeric'
               underlineColorAndroid="#bbb"
               style={{
                 paddingLeft : 16
               }}
-              placeholder="JNV Katihar"/>
+              placeholder="2012"
+              onChangeText={admissionYear => {
+                this.updateData({ admissionYear });
+              }}
+              value={this.state.userData.admissionYear}/>
             <Text>Passout Year</Text>
             <TextInput
               multiline
               numberOfLines={2}
+              keyboardType='numeric'
               underlineColorAndroid="#bbb"
               style={{
                 paddingLeft : 16
               }}
-              placeholder="2012"/>
-            <Text>Migration</Text>
+              placeholder="2012"
+              onChangeText={passoutYear => {
+                this.updateData({ passoutYear });
+              }}
+              value={this.state.userData.passoutYear}/>
+            {/* <Text>Migration</Text>
             <TextInput
               underlineColorAndroid="#bbb"
               style={{
                 paddingLeft : 16,
                 paddingBottom : 4
               }}
-              placeholder="JNV-Patna"/>
-            <Text>Address of JNV</Text>
+              placeholder="JNV-Patna"/> */}
+            {/* <Text>Address of JNV</Text>
             <TextInput
               underlineColorAndroid="#bbb"
               numberOfLines = {4}
@@ -231,7 +379,7 @@ class ProfilePage extends Component {
                 paddingLeft : 16,
                 paddingBottom : 4
               }}
-              placeholder="JNV araria R.S. 560034"/>
+              placeholder="JNV araria R.S. 560034"/> */}
           </View>
       </View>
     );
@@ -260,6 +408,92 @@ class ProfilePage extends Component {
     )
   }
 
+  bloodGroup = () => {
+    return <View style={{ ...viewObj }}>
+            <Text style={{
+              ...textObj
+            }}>Blood Group</Text>
+            <TextInput
+              underlineColorAndroid="#bbb"
+              placeholder="B+"
+              style={{
+                paddingLeft : 16,
+                paddingBottom : 2,
+                height : 40,
+                marginTop : 4
+              }}
+              onChangeText={bloodGroup => {
+                this.updateData({bloodGroup});
+              }}
+              value={this.state.userData.bloodGroup}/>
+          </View>
+  }
+
+  name = () => {
+    return (
+      <View style={{ ...viewObj, marginBottom : 8 }}>
+          <Text style={{
+            ...textObj
+          }}>Full Name</Text>
+          <View style={{
+            paddingHorizontal : 8,
+            paddingVertical : 16
+          }}>
+            <Text>First Name</Text>
+            <TextInput 
+              multiline
+              numberOfLines={2}
+              underlineColorAndroid="#bbb"
+              style={{
+                paddingLeft : 16
+              }}
+              placeholder="Prem"
+              onChangeText={firstName => {
+                this.updateData({ firstName });
+              }}
+              value={this.state.userData.firstName}/>
+            <Text>Last Name</Text>
+            <TextInput
+              multiline
+              numberOfLines={2}
+              underlineColorAndroid="#bbb"
+              style={{
+                paddingLeft : 16
+              }}
+              placeholder="Piyush"
+              onChangeText={lastName => {
+                this.updateData({ lastName });
+              }}
+              value={this.state.userData.lastName}/>
+          </View>
+      </View>
+    );
+  }
+
+  updateUI = () => {
+    return <TouchableOpacity
+          style={{
+              flex : 1,
+              justifyContent : 'center',
+              marginTop : 20,
+              marginBottom : 40,
+              height : 48,
+              width : '100%',
+              borderRadius : 4,
+              marginRight : 8
+          }}
+          onPress={e => {
+            console.log(this.state);
+          }}
+      >
+        <GradientView h={'100%'}>
+            <Text style={{ fontSize : 14, color : Color.themeFontColor, fontWeight : 'bold', textAlign : 'center' }}>
+                UPDATE
+            </Text>
+        </GradientView>
+      </TouchableOpacity>
+  }
+
   render(){
     return (
       <Container>
@@ -272,20 +506,10 @@ class ProfilePage extends Component {
           {
             this.profilePic()
           }
-          <View style={{ ...viewObj }}>
-            <Text style={{
-              ...textObj
-            }}>Full Name</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              placeholder="Full Name"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 2,
-                height : 40,
-                marginTop : 4
-              }}/>
-          </View>
+          {
+            this.name()
+          }
+          
           {
             this.communicationDetails()
           }
@@ -303,20 +527,9 @@ class ProfilePage extends Component {
                 marginTop : 4
               }}/>
           </View>
-          <View style={{ ...viewObj }}>
-            <Text style={{
-              ...textObj
-            }}>Blood Group</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              placeholder="B+"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 2,
-                height : 40,
-                marginTop : 4
-              }}/>
-          </View>
+          {
+            this.bloodGroup()
+          }
           {
             this.navodayaDetails()
           }
@@ -340,7 +553,12 @@ class ProfilePage extends Component {
                 marginTop : 4
               }}/>
           </View>
-          
+
+          {
+            this.updateUI()
+          }
+
+          <JNVList hideShowPickArea={this.hideShowPickArea} selectedArea={this.selectedArea}/>
         </Content>
       </Container>
     );
@@ -355,6 +573,7 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
+    setData
   }, dispatch);
 }
 

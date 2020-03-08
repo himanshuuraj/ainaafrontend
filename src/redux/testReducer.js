@@ -50,7 +50,11 @@ let reducer = {
         type : 'gallery'
     },
 
-    allPosts : []
+    allPosts : [],
+
+    pickJNV : {
+        show : false
+    }
 };
 
 export default (state = reducer, action) => {

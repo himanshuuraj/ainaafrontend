@@ -4,7 +4,8 @@ import {
     UPDATE_DATA,
     CREATE_POST,
     VERIFY_EMAIL,
-    GET_ALL_POSTS
+    GET_ALL_POSTS,
+    HIDE_JNV_LISTS
 } from "./constants";
 
 export const testAction = payload => {
@@ -46,5 +47,11 @@ export const createPost = post => {
 export const getAllPosts = () => {
     return {
         type : GET_ALL_POSTS
+    }
+}
+
+export const hideShowPickArea = () => {
+    return {
+        type : HIDE_JNV_LISTS
     }
 }
