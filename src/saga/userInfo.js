@@ -1,6 +1,21 @@
 import db from "./../repo/firebase-repo";
 import { AsyncStorage } from "react-native";
 
+var signIn = userData => {
+    var userInfoRef = db.collection("userInfo");
+    return userInfoRef.where("email", "==", userData.email)
+        .where("password", "==", userData.password)
+        .get()
+        .then(function(userInfo) {
+            console.log(userInfo)
+            return userInfo;
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+            return error;
+        });
+}
+
 var registerUserInfo = function(userData){
     return db.collection("userInfo").add(userData)
         .then(function(docRef) {
@@ -89,4 +104,4 @@ var sendNotification = (users, userInfo) => {
             });
 }
 
-export { registerUserInfo, createPost, getAllPosts, sendNotification, getAllUser }
+export { registerUserInfo, createPost, getAllPosts, sendNotification, getAllUser, signIn }

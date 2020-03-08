@@ -7,7 +7,7 @@ import { Actions } from 'react-native-router-flux';
 import {
     setData, verifyEmail
 } from "./../redux/action";
-import { registerUserInfo, createPost, getAllPosts, sendNotification, getAllUser } from "./userInfo";
+import { registerUserInfo, createPost, getAllPosts, sendNotification, getAllUser, signIn } from "./userInfo";
 
 function* registerUserInfoSaga(action){
     try {
@@ -36,18 +36,14 @@ function* verifyEmailSaga(action){
         let firebaseToken = yield call(AsyncStorage.getItem, 'firebaseToken');
         if(firebaseToken)
             obj.firebaseToken = firebaseToken;
-        let response = yield call(postApiCall, Api.apiToVerifyEmail, obj );
+        let response = yield call(signIn, obj );
         console.log("RESPONSE", response);
-        if(!response.success){
-            alert(response.message);
+        if(!response || response.docs.length == 0){
+            yield put(setData({ errorModalInfo : { showModal : true, message : "Credentials not valid", title : "Success" } }));
         }else{
-            let userInfo = response.body;
-            if(!userInfo){
-                alert(response.message);
-            }else{
-                yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(response));
-                Actions.home();
-            }
+            let userInfo = response.docs[0].data();
+            yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(userInfo));
+            Actions.home();
         }
     }catch(err){
         alert(JSON.stringify(err));
