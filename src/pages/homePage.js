@@ -107,25 +107,25 @@ class HomePage extends Component {
             </CardItem>
             <CardItem>
                 <Left>
-                    <Text style={{textDecorationLine: 'underline'}}>5 Comments</Text>
+                    <Text>5 Comments</Text>
                 </Left>
                 <Right>
                     <Text style={{textDecorationLine: 'underline'}}> View all Comments </Text>
                 </Right>
             </CardItem>
-            <View style={{ borderTopWidth: StyleSheet.hairlineWidth, borderTopColor : 'black', marginHorizontal : 16}}/>
+            {/* <View style={{ borderTopWidth: StyleSheet.hairlineWidth, borderTopColor : 'black', marginHorizontal : 16}}/> */}
             {/* <CardItem style={{ borderWidth : StyleSheet.hairlinewidth, borderColor : 'red', flexDirection: 'row'}}>
                     <Thumbnail 
                         style={{ height : 30, width : 30, marginRight : 16 }}
                         source={{uri: 'https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/08/08/17/elon-musk.jpg'}} />
                     <Text>Yeah - i live at anand vihar</Text>
             </CardItem> */}
-            <CardItem style={{ borderWidth : StyleSheet.hairlinewidth, borderColor : 'red', flexDirection: 'row'}}>
+            {/* <CardItem style={{ borderWidth : StyleSheet.hairlinewidth, borderColor : 'red', flexDirection: 'row'}}>
                     <Thumbnail 
                         style={{ height : 30, width : 30, marginRight : 16 }}
                         source={{uri: 'https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/08/08/17/elon-musk.jpg'}} />
                     <TextInput placeholder={'First Comment goes here'} />
-            </CardItem>
+            </CardItem> */}
         </Card>
       );
   }

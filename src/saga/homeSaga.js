@@ -7,7 +7,7 @@ import { Actions } from 'react-native-router-flux';
 import {
     setData, verifyEmail
 } from "./../redux/action";
-import { registerUserInfo, createPost, getAllPosts } from "./userInfo";
+import { registerUserInfo, createPost, getAllPosts, sendNotification, getAllUser } from "./userInfo";
 
 function* registerUserInfoSaga(action){
     try {
@@ -17,7 +17,7 @@ function* registerUserInfoSaga(action){
         let response = yield call(registerUserInfo, action.userData)
         console.log(response);
         if(response){
-            let userInfo = { ...action.userData, userId : response };
+            let userInfo = { ...action.userData, userId : response, firebaseToken : firebaseToken };
             yield put(setData({ userInfo }));
             yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(userInfo));
             Actions.home();
@@ -73,6 +73,8 @@ function* createPostSaga(action){
             yield put(setData({ postModal : { show : false } }));
             yield put(setData({ errorModalInfo : { showModal : true, message : "Post created Successfully", title : "Success" } }));
             Actions.home();
+            var users = yield call(getAllUser);
+            sendNotification(users, userInfo);
         }
     }catch(err){
         alert(JSON.stringify(err));

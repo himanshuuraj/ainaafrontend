@@ -57,6 +57,7 @@ export default class App extends React.Component {
   }
 
   _handleNotification = (notification) => {
+    console.log(notification, "Notification");
     this.setState({notification: notification});
   };
 
