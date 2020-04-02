@@ -8,9 +8,6 @@ import {
   Container,
   Content
 } from "native-base";
-import {
-  Color
-} from "./../global/util";
 import LoginFormComponent from './../components/loginFormComponent';
 import RegisterationComponent from "./../components/registerationComponent";
 import ImageLogoComponent from "./../components/imageLogoComponent";

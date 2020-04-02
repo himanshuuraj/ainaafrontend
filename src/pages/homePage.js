@@ -11,6 +11,7 @@ import { TouchableOpacity, TextInput, StyleSheet, Text, View } from 'react-nativ
 import HeaderSection from "./../components/header";
 import Camera from "./../components/camera";
 import { setData, getAllPosts } from "./../redux/action";
+// import { Ionicons } from '@expo/vector-icons';
 
 class HomePage extends Component {
 
@@ -126,6 +127,9 @@ class HomePage extends Component {
                         source={{uri: 'https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/08/08/17/elon-musk.jpg'}} />
                     <TextInput placeholder={'First Comment goes here'} />
             </CardItem> */}
+            {/* <Ionicons name="ios-edit" size={28} color="green" style={{position: 'absolute', top : 10, right : 10}}/> */}
+            <Icon name="home" style={{position: 'absolute', top : 10, right : 10}}/>
+            <Icon name="home" style={{position: 'absolute', top : 10, right : 40}}/>
         </Card>
       );
   }
