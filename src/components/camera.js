@@ -220,7 +220,7 @@ class CameraPage extends Component {
 
 function mapStateToProps(state, props) {
   return {
-    camera : state.testReducer.camera || {}
+    //camera : state.testReducer.camera || {}
   }
 }
 

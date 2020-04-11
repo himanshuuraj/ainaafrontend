@@ -19,6 +19,7 @@ import ErrorModal from "./src/components/ErrorModal";
 import PostModal from "./src/components/postModal";
 import CommentModal from "./src/components/commentModal";
 import JNVList from "./src/components/jnvList";
+import CameraModal from "./src/components/cameraModal";
 
 export default class App extends React.Component {
 
@@ -106,6 +107,7 @@ export default class App extends React.Component {
         <PostModal />
         <CommentModal />
         <ErrorModal />
+        <CameraModal />
         {/* <Camera type="camera" showCamera={this.state.showCamera} hideCamera={this.hideCamera} getAwsImageUrl={this.getAwsImageUrl} /> */}
       </Provider>
     );
