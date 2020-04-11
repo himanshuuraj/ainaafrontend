@@ -7,6 +7,7 @@ import { setData } from "../redux/action";
 import Camera from "./../components/camera";
 import GradientView from "./../components/gradientView";
 import GalleryImagePicker from "./../components/galleryImagePicker";
+import CameraImagePicker from "./../components/cameraImagePicker";
 
 let { width, height } = Dimensions.get('window');
 width = width;
@@ -49,25 +50,7 @@ class CameraModal extends Component{
                                 justifyContent : 'center',  padding: 16,
                                 borderWidth : 1, borderColor : Color.themeColor
                     }}>
-                    <TouchableOpacity
-                        style={{
-                            height : 48,
-                            justifyContent : 'center',
-                            marginBottom : 10,
-                            width : '100%',
-                            borderRadius : 4,
-                            marginRight : 8
-                        }}
-                        onPress={e => {
-                            console.log(this.state);
-                        }}
-                    >
-                        <GradientView h={'100%'}>
-                            <Text style={{ fontSize : 14, color : Color.themeFontColor, fontWeight : 'bold', textAlign : 'center' }}>
-                                Select image from Camera
-                            </Text>
-                        </GradientView>
-                    </TouchableOpacity>
+                    <CameraImagePicker />
                     <GalleryImagePicker />
                 </View>
                 {/* <Camera type="camera" hideCamera={this.hideCamera} getAwsImageUrl={this.getAwsImageUrl} /> */}
