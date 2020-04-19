@@ -109,7 +109,7 @@ export default class App extends React.Component {
         <CommentModal />
         <ErrorModal />
         <CameraModal />
-        <Camera type="camera" showCamera={true}/>
+        <Camera type="camera" showCamera={false}/>
       </Provider>
     );
   }

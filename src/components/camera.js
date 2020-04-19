@@ -5,9 +5,13 @@ import {
 } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
-import { Color, getHeight } from '../global/util';
+import { Color } from '../global/util';
 import { uploadOnAWSRequest } from "../global/request";
-import { View, Text, Touch } from "./../ui-kit";
+import { View, Touch } from "./../ui-kit";
+import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux'
+
+
 let { width, height } = Dimensions.get('window');
 
 export default props => {
