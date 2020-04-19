@@ -1,34 +1,11 @@
-import React, {Component} from 'react';
-import { 
-  View,
-  Image
-} from 'react-native';
-import {
-  getFont,
-  Color,
-  getHeight,
-  Font
-} from "../global/util";
+import React from 'react';
+import { Image } from 'react-native';
+import { getHeight } from "../global/util";
+import {View} from "./../ui-kit";
 
-export default class ImageLogoComponent extends Component {
-
-  state = {
-    phone : "",
-    password : "",
-    gender : "male" 
-  };
-
-  constructor(props){
-    super(props);
-  }
-
-  render() {
+export default props => {
     return (
-           <View style={{
-             height : getHeight(16),
-             width : "100%",
-             justifyContent : "center",
-             alignItems : "center",
+           <View h={getHeight(16)} w={'100%'} jc ai style={{
              marginTop : getHeight(8),
              marginBottom : getHeight(2)
            }}>
@@ -36,6 +13,5 @@ export default class ImageLogoComponent extends Component {
                       style={{flex : 1}}
                       resizeMode = "contain"/>
            </View>
-             )
-  }
+    )
 }

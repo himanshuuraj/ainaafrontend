@@ -7,20 +7,21 @@ import { Actions } from 'react-native-router-flux';
 import {
     setData, verifyEmail
 } from "./../redux/action";
-import { registerUserInfo, createPost, getAllPosts, sendNotification, getAllUser, signIn } from "./userInfo";
 
 function* registerUserInfoSaga(action){
     try {
         let obj = action.userData;
         let firebaseToken = yield call(AsyncStorage.getItem, 'firebaseToken');
         obj['token'] = firebaseToken;
-        let response = yield call(registerUserInfo, action.userData)
-        console.log(response);
-        if(response){
-            let userInfo = { ...action.userData, userId : response, firebaseToken : firebaseToken };
+        let response = yield call(postApiCall, Api.apiToInsertUserInfo, obj );
+        console.log("RESPONSE", response);
+        if(response.success){
+            let userInfo = response.body;
             yield put(setData({ userInfo }));
             yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(userInfo));
             Actions.home();
+        }else{
+            alert(response.message);
         }
     } catch (e) {
         alert(JSON.stringify(e));
@@ -36,14 +37,18 @@ function* verifyEmailSaga(action){
         let firebaseToken = yield call(AsyncStorage.getItem, 'firebaseToken');
         if(firebaseToken)
             obj.firebaseToken = firebaseToken;
-        let response = yield call(signIn, obj );
+        let response = yield call(postApiCall, Api.apiToVerifyEmail, obj );
         console.log("RESPONSE", response);
-        if(!response || response.docs.length == 0){
-            yield put(setData({ errorModalInfo : { showModal : true, message : "Credentials not valid", title : "Success" } }));
+        if(!response.success){
+            alert(response.message);
         }else{
-            let userInfo = response.docs[0].data();
-            yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(userInfo));
-            Actions.home();
+            let userInfo = response.body;
+            if(!userInfo){
+                alert(response.message);
+            }else{
+                yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(response));
+                Actions.home();
+            }
         }
     }catch(err){
         alert(JSON.stringify(err));
@@ -58,19 +63,15 @@ function* createPostSaga(action){
         post["email"] = userInfo.email;
         post["firstName"] = userInfo.firstName;
         post["lastName"] = userInfo.lastName;
-        post["userId"] = userInfo.userId;
-        post["createdAt"] = new Date().getTime()
-        let response = yield call(createPost, post);
+        post["userId"] = userInfo._id;
+        let response = yield call(postApiCall, Api.apiToCreatePost, post);
         console.log("RESPONSE", response);
-        if(!response){
+        if(!response.success){
             yield put(setData({ errorModalInfo : { showModal : true, message : "Error in creating post", title : "Success" } }));
         }else{
-            let post = { ...post, postId : response };
             yield put(setData({ postModal : { show : false } }));
             yield put(setData({ errorModalInfo : { showModal : true, message : "Post created Successfully", title : "Success" } }));
             Actions.home();
-            var users = yield call(getAllUser);
-            sendNotification(users, userInfo);
         }
     }catch(err){
         alert(JSON.stringify(err));
@@ -79,13 +80,13 @@ function* createPostSaga(action){
 
 function* getAllPostsSaga(action){
     try{
-        let response = yield call(getAllPosts);
-        if(!response){
+        let response = yield call(getApiCall, Api.apiToGetAllPosts);
+        console.log("RESPONSE", response);
+        if(!response.success){
             yield put(setData({ errorModalInfo : { showModal : true, message : "Error in reteriving posts", title : "Success" } }));
         }else{
-            console.log(response);
             yield put(setData({ postModal : { show : false } }));
-            yield put(setData({ allPosts : response }));
+            yield put(setData({ allPosts : response.body }));
         }
     }catch(err){
         alert(JSON.stringify(err));

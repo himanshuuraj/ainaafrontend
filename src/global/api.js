@@ -1,4 +1,4 @@
-export const HOST = "http://192.168.1.107:3000";
+export const HOST = "http://192.168.31.16:5000";
 
 export const apiToInsertUserInfo = HOST + "/userInfo/create";
 
