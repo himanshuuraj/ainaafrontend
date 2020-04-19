@@ -54,6 +54,10 @@ let reducer = {
 
     pickJNV : {
         show : false
+    },
+
+    cameraModal : {
+        show : false
     }
 };
 

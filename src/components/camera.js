@@ -8,8 +8,7 @@ import { Camera } from 'expo-camera';
 import { Color } from '../global/util';
 import { uploadOnAWSRequest } from "../global/request";
 import { View, Touch } from "./../ui-kit";
-import { useSelector } from 'react-redux';
-import { shallowEqual, useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 
 
 let { width, height } = Dimensions.get('window');
@@ -20,6 +19,16 @@ export default props => {
   let [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   let [showCamera, toggleCamera] = useState(true);
   const cameraRef = useRef(null);
+
+  let cameraSelector = useSelector(state => state.testReducer.camera)
+  if(!cameraSelector.show)
+    return null
+
+  const dispatch = useDispatch()
+  const incrementCounter = useCallback(
+    () => dispatch({ type: 'increment-counter' }),
+    [dispatch]
+  )
 
   useEffect(() => {
     setCamearPermissionOnInit();
