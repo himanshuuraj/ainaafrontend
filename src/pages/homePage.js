@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import {
-    Container, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body, Title, Image, Right
+    Container, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body, Title, Right
 } from "native-base";
 import {
   Color
 } from "../global/util";
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
-import { TouchableOpacity, TextInput, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import HeaderSection from "./../components/header";
 import Camera from "./../components/camera";
 import { setData, getAllPosts } from "./../redux/action";
-// import { Ionicons } from '@expo/vector-icons';
+import {Image} from "./../ui-kit";
 
 class HomePage extends Component {
 
@@ -114,22 +114,13 @@ class HomePage extends Component {
                     <Text style={{textDecorationLine: 'underline'}}> View all Comments </Text>
                 </Right>
             </CardItem>
-            {/* <View style={{ borderTopWidth: StyleSheet.hairlineWidth, borderTopColor : 'black', marginHorizontal : 16}}/> */}
-            {/* <CardItem style={{ borderWidth : StyleSheet.hairlinewidth, borderColor : 'red', flexDirection: 'row'}}>
-                    <Thumbnail 
-                        style={{ height : 30, width : 30, marginRight : 16 }}
-                        source={{uri: 'https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/08/08/17/elon-musk.jpg'}} />
-                    <Text>Yeah - i live at anand vihar</Text>
-            </CardItem> */}
-            {/* <CardItem style={{ borderWidth : StyleSheet.hairlinewidth, borderColor : 'red', flexDirection: 'row'}}>
-                    <Thumbnail 
-                        style={{ height : 30, width : 30, marginRight : 16 }}
-                        source={{uri: 'https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/08/08/17/elon-musk.jpg'}} />
-                    <TextInput placeholder={'First Comment goes here'} />
-            </CardItem> */}
-            {/* <Ionicons name="ios-edit" size={28} color="green" style={{position: 'absolute', top : 10, right : 10}}/> */}
-            <Icon name="home" style={{position: 'absolute', top : 10, right : 10}}/>
-            <Icon name="home" style={{position: 'absolute', top : 10, right : 40}}/>
+
+            <Image w={20} h={20} a t={5} r={5}
+              uri = 'https://img.pngio.com/trash-can-icon-png-359844-free-icons-library-trash-icon-png-512_512.jpg'
+            />
+            <Image w={20} h={20} a t={5} r={30}
+              uri = 'https://cdn0.iconfinder.com/data/icons/set-app-incredibles/24/Edit-01-512.png'
+            />
         </Card>
       );
   }

@@ -11,7 +11,7 @@ class HeaderSection extends Component {
 
     render() {
         return (
-            <Header style={{ backgroundColor : Color.themeColor, marginTop : StatusBar.currentHeight, justifyContent : 'center', alignItems : 'center' }}>
+            <Header style={{ backgroundColor : Color.themeColor, justifyContent : 'center', alignItems : 'center' }}>
                 <Body style={{ justifyContent : 'center', alignItems : 'center' }}>
                 <Title> { this.props.title } </Title>
                 </Body>

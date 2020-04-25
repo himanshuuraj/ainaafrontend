@@ -24,11 +24,11 @@ export default props => {
   if(!cameraSelector.show)
     return null
 
-  const dispatch = useDispatch()
-  const incrementCounter = useCallback(
-    () => dispatch({ type: 'increment-counter' }),
-    [dispatch]
-  )
+  // const dispatch = useDispatch()
+  // const incrementCounter = useCallback(
+  //   () => dispatch({ type: 'increment-counter' }),
+  //   [dispatch]
+  // )
 
   useEffect(() => {
     setCamearPermissionOnInit();
