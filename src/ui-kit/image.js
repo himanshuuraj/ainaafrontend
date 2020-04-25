@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image } from 'react-native';
+import Touch from "./touch";
 
 export default (props) => {
     let { t, w, h, a, r, style, uri, onPress, ...rest} = props
@@ -14,9 +15,9 @@ export default (props) => {
       }, ...style};
 
     if (onPress) 
-      return <TouchableOpacity onPress={onPress}>
-        <Image {...rest} style={st} source={{ uri }} />
-      </TouchableOpacity>
+      return <Touch a w={w} h={h} to={t} ri={r} onPress={onPress}>
+        <Image {...rest} style={{ width : '100%', height: '100%'}} source={{ uri }} />
+      </Touch>
 
     return (
       <Image {...rest} style={st} source={{ uri }} />

@@ -46,8 +46,7 @@ let reducer = {
     },
 
     camera : {
-        show : false,
-        type : 'gallery'
+        show : false
     },
 
     allPosts : [],

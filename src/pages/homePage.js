@@ -1,27 +1,29 @@
-import React, {Component} from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
-    Container, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body, Title, Right
+    Container, Content, Card, CardItem, Thumbnail, Left, Body, Right
 } from "native-base";
 import {
   Color
 } from "../global/util";
-import {bindActionCreators} from 'redux';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import HeaderSection from "./../components/header";
 import Camera from "./../components/camera";
-import { setData, getAllPosts } from "./../redux/action";
-import {Image} from "./../ui-kit";
+import { setData, getAllPosts, deletePost } from "./../redux/action";
+import { Image } from "./../ui-kit";
 
-class HomePage extends Component {
 
-  state = {
-    activeScreen  : 'home'
-  };
+export default props => {
 
-  constructor(props){
-    super(props);
-  }
+  const dispatch = useDispatch()
+  useEffect(() => {
+    getAllPosts();
+  }, []);
+
+  let allPosts = useSelector(state => state.testReducer.allPosts) || []
+  console.log(allPosts, "POSTS");
+
+  const setDataAction = (arg) => dispatch(setData(arg))
   
   getAwsImageUrl = (imageUrl) => {
     let imageList = this.state.imageList;
@@ -66,11 +68,11 @@ class HomePage extends Component {
       <TouchableOpacity style={{ height : 50, borderWidth : StyleSheet.hairlineWidth, borderColor : 'black', flexDirection : 'row', backgroundColor : '#fff',
             marginVertical : 16, borderRadius : 8, alignItems : 'center', justifyContent : 'flex-start', paddingLeft : 8 }}
             onPress={() => {
-              this.props.setData({
+              setDataAction({
                 postModal : {
                   show : true
                 }
-              });
+              })
             }}
             >
         {/* {
@@ -87,7 +89,7 @@ class HomePage extends Component {
     )
   }
 
-  renderFeedCard(feed, index){
+  renderFeedCard = (feed, index) => {
       return (
         <Card style={{flex: 0}} key={index}>
             <CardItem>
@@ -108,14 +110,21 @@ class HomePage extends Component {
             </CardItem>
             <CardItem>
                 <Left>
-                    <Text>5 Comments</Text>
+                  <Text>{feed.comment.length ? feed.comment.length : "No "} Comments</Text>
                 </Left>
                 <Right>
                     <Text style={{textDecorationLine: 'underline'}}> View all Comments </Text>
                 </Right>
             </CardItem>
 
-            <Image w={20} h={20} a t={5} r={5}
+            <Image w={20} h={20} a t={5} r={2} onPress={() => {setDataAction({
+              confirmModalInfo : {
+                showModal : true,
+                message : "Do you want to delete the post",
+                primaryText : "Delete",
+                primaryAction : () => dispatch(deletePost(feed._id)),
+              }
+            })}}
               uri = 'https://img.pngio.com/trash-can-icon-png-359844-free-icons-library-trash-icon-png-512_512.jpg'
             />
             <Image w={20} h={20} a t={5} r={30}
@@ -124,9 +133,8 @@ class HomePage extends Component {
         </Card>
       );
   }
-
-  render(){
-    return (
+    
+  return (
       <Container>
         <HeaderSection title={'AINAA'} />
         <Content style={{
@@ -137,29 +145,12 @@ class HomePage extends Component {
             this.createPost()
           }
           {
-              this.props.allPosts.map((feed, index) => this.renderFeedCard(feed, index))
+              allPosts.map((feed, index) => this.renderFeedCard(feed, index))
           }
         </Content>
       </Container>
     );
-  }
 }
-
-function mapStateToProps(state, props) {
-  return {
-      data : state.testReducer.test,
-      allPosts : state.testReducer.allPosts || []
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    setData,
-    getAllPosts
-  }, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
 
 let viewObj = {
   marginTop : 16, 

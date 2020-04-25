@@ -1,11 +1,16 @@
 import { call, put, takeEvery, takeLatest, select } from 'redux-saga/effects';
-import { REGISTER_USER_INFO, SEND_OTP, VERIFY_OTP, VERIFY_EMAIL, CREATE_POST, GET_ALL_POSTS } from "./../redux/constants";
-import { getApiCall, postApiCall } from "./../global/request";
+import { REGISTER_USER_INFO, 
+    VERIFY_EMAIL, 
+    CREATE_POST, 
+    GET_ALL_POSTS,
+    DELETE_POST
+ } from "./../redux/constants";
+import { getApiCall, postApiCall, deleteApiCall } from "./../global/request";
 import * as Api from "./../global/api";
 import {AsyncStorage} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import {
-    setData, verifyEmail
+    setData, getAllPosts
 } from "./../redux/action";
 
 function* registerUserInfoSaga(action){
@@ -93,11 +98,29 @@ function* getAllPostsSaga(action){
     }
 }
 
+function* deletePostSaga(action){
+    try{
+        let url = Api.apiToDeletePost
+        url = url.replace('{id}', action.id)
+        let response = yield call(deleteApiCall, url);
+        console.log("RESPONSE", response);
+        if(!response.success){
+            yield put(setData({ errorModalInfo : { showModal : true, message : "Error in reteriving posts", title : "Success" } }));
+        }else{
+            yield put(getAllPosts());
+            yield put(setData({ confirmModalInfo : { showModal : false } }));
+        }
+    }catch(err){
+        alert(JSON.stringify(err));
+    }
+}
+
 const mySaga = [
     takeLatest( REGISTER_USER_INFO, registerUserInfoSaga ),
     takeLatest( VERIFY_EMAIL, verifyEmailSaga),
     takeLatest( CREATE_POST, createPostSaga),
-    takeLatest( GET_ALL_POSTS, getAllPostsSaga )
+    takeLatest( GET_ALL_POSTS, getAllPostsSaga ),
+    takeLatest( DELETE_POST, deletePostSaga )
 ];
 
 export default mySaga;

@@ -44,7 +44,8 @@ export default (props) => {
                 {...rest} style={st}
                 onPress={props.onPress}
             >
-                <Text s={s} c={c} b t={t} center/>
+                { t ? <Text s={s} c={c} b t={t} center/> : null }
+                { props.children }
             </TouchableOpacity>
         )
 }
