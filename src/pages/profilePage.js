@@ -3,8 +3,6 @@ import {
   Container,
   Content,
   Text,
-  Icon,
-  Button
 } from "native-base";
 import { View, TextInput, Image, TouchableOpacity, TouchableHighlight } from "react-native";
 import {
@@ -56,7 +54,8 @@ class ProfilePage extends Component {
           }}>Permanent Address</Text>
           <View style={{
             paddingHorizontal : 8,
-            paddingVertical : 16
+            paddingTop : 16,
+            paddingBottom : 4
           }}>
             <Text>Line1</Text>
             <TextInput 
@@ -164,7 +163,8 @@ class ProfilePage extends Component {
           }}>Current Address</Text>
           <View style={{
             paddingHorizontal : 8,
-            paddingVertical : 16
+            paddingTop : 16,
+            paddingBottom : 8
           }}>
             <Text>Line1</Text>
             <TextInput 
@@ -271,7 +271,8 @@ class ProfilePage extends Component {
           }}>Communication Details</Text>
           <View style={{
             paddingHorizontal : 8,
-            paddingVertical : 16
+            paddingTop : 16,
+            paddingBottom : 4
           }}>
             <Text>Phone Number</Text>
             <TextInput 
@@ -313,7 +314,8 @@ class ProfilePage extends Component {
           }}>Navodaya Details</Text>
           <View style={{
             paddingHorizontal : 8,
-            paddingVertical : 16
+            paddingTop : 16,
+            paddingBottom : 4
           }}>
             <Text>Navodaya Name</Text>
             <TouchableHighlight onPress={() => {
@@ -437,7 +439,8 @@ class ProfilePage extends Component {
           }}>Full Name</Text>
           <View style={{
             paddingHorizontal : 8,
-            paddingVertical : 16
+            paddingTop : 16,
+            paddingBottom : 4
           }}>
             <Text>First Name</Text>
             <TextInput 
@@ -454,8 +457,6 @@ class ProfilePage extends Component {
               value={this.state.userData.firstName}/>
             <Text>Last Name</Text>
             <TextInput
-              multiline
-              numberOfLines={2}
               underlineColorAndroid="#bbb"
               style={{
                 paddingLeft : 16
@@ -475,7 +476,6 @@ class ProfilePage extends Component {
           style={{
               flex : 1,
               justifyContent : 'center',
-              marginTop : 20,
               marginBottom : 40,
               height : 48,
               width : '100%',
