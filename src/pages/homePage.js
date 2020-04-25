@@ -6,11 +6,11 @@ import {
   Color
 } from "../global/util";
 import { useDispatch, useSelector } from 'react-redux';
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import HeaderSection from "./../components/header";
 import Camera from "./../components/camera";
 import { setData, getAllPosts, deletePost } from "./../redux/action";
-import { Image } from "./../ui-kit";
+import { Image, Text } from "./../ui-kit";
 
 
 export default props => {
@@ -36,7 +36,7 @@ export default props => {
       <View style={{ ...viewObj }}>
           <Text style={{
             ...textObj
-          }}>Pick Gallery</Text>
+          }} t={'Pick Gallery'} />
         <View style={{
             paddingHorizontal : 8,
             paddingVertical : 16
@@ -55,7 +55,7 @@ export default props => {
               this.setState({ showCamera : true });
             }}
           >
-            <Text style={{ fontSize : 14 }}>ADD IMAGE FROM CAMERA</Text>
+            <Text s={14} t={'ADD IMAGE FROM CAMERA'} />
           </TouchableOpacity>
           <Camera type={'gallery'} getAwsImageUrl={this.getAwsImageUrl} /> 
         </View>
@@ -82,9 +82,7 @@ export default props => {
           small 
           size={20}
           source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/1/14/Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg'}} />
-        <Text style={{ marginLeft : 8 }}>
-          Write your post here ...
-        </Text>
+        <Text style={{ marginLeft : 8 }} t={'Write your post here ...'}/>
       </TouchableOpacity>
     )
   }
@@ -96,24 +94,22 @@ export default props => {
             <Left>
                 <Thumbnail source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/1/14/Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg'}} />
                 <Body>
-                    <Text>{feed.firstName + " " + feed.lastName}</Text>
-                    <Text note>JNV Araria (2005- 2012)</Text>
+                    <Text t={feed.firstName + " " + feed.lastName} />
+                    <Text t={'JNV Araria (2005- 2012)'} />
                 </Body>
             </Left>
             </CardItem>
             <CardItem>
                 <Body>
-                    <Text>
-                        { feed.text }
-                    </Text>
+                    <Text t={ feed.text } />
                 </Body>
             </CardItem>
             <CardItem>
                 <Left>
-                  <Text>{feed.comment.length ? feed.comment.length : "No "} Comments</Text>
+                  <Text t={feed.comment.length ? feed.comment.length : "No " + "Comments"} />
                 </Left>
                 <Right>
-                    <Text style={{textDecorationLine: 'underline'}}> View all Comments </Text>
+                    <Text style={{textDecorationLine: 'underline'}} t={'View all Comments'} />
                 </Right>
             </CardItem>
 
