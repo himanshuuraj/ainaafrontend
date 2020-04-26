@@ -107,7 +107,7 @@ export default props => {
             onChangeText={this.formOnChangeText} name={'permanentAddress.state'}
             value={state.permanentAddress.state}/>
           <Text t={'Pincode'} />
-          <TextInput ml nl={2} uc={"#bbb"} ph="560035" pl={16} pb={4}
+          <TextInput ml nl={2} uc={"#bbb"} ph="560035" pl={16} pb={4} keyboardType='numeric'
             onChangeText={this.formOnChangeText} name={'permanentAddress.pincode'}
             value={state.permanentAddress.pincode}/>
         </View>
@@ -141,7 +141,7 @@ export default props => {
             onChangeText={this.formOnChangeText} name={'currentAddress.state'}
             value={state.currentAddress.state}/>
           <Text t={'Pincode'} />
-          <TextInput ml nl={2} uc={"#bbb"} ph="560035" pl={16} pb={4}
+          <TextInput ml nl={2} uc={"#bbb"} ph="560035" pl={16} pb={4} keyboardType='numeric'
             onChangeText={this.formOnChangeText} name={'currentAddress.pincode'}
             value={state.currentAddress.pincode}/>
         </View>
@@ -155,9 +155,9 @@ export default props => {
           <Text style={{ ...textObj }} t={'Communication Details'} />
           <View ph={8} pt={16} pb={4}>
             <Text t={'Phone Number'} />
-            <TextInput uc={"#bbb"} ph="1234567890" pl={16} pb={4}
-            onChangeText={this.formOnChangeText} name={'phone'} keyboardType='numeric'
-            value={state.phone}/>
+            <TextInput uc={"#bbb"} ph="1234567890" pl={16} pb={4} maxLength={10}
+            onChangeText={this.formOnChangeText} name={'phoneNumber'} keyboardType='numeric'
+            value={state.phoneNumber}/>
             <Text t={'Email'} />
             <TextInput uc={"#bbb"} ph="hraj3116@gmail.com" pl={16}
             onChangeText={this.formOnChangeText} name={'email'}
