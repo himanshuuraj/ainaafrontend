@@ -17,3 +17,7 @@ export const GET_ALL_POSTS = "GET_ALL_POSTS";
 export const HIDE_JNV_LISTS = "HIDE_JNV_LISTS";
 
 export const DELETE_POST = "DELETE_POST";
+
+export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
+
+export const GET_USER_DETAIL = "GET_USER_DETAIL";

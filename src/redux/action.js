@@ -6,8 +6,24 @@ import {
     VERIFY_EMAIL,
     GET_ALL_POSTS,
     HIDE_JNV_LISTS,
-    DELETE_POST
+    DELETE_POST,
+    UPDATE_USER_DETAILS,
+    GET_USER_DETAIL
 } from "./constants";
+
+export const getUserDetail = id => {
+    return {
+        type : GET_USER_DETAIL,
+        id
+    }
+}
+
+export const updateUserDetails = userData => {
+    return {
+        type : UPDATE_USER_DETAILS,
+        userData
+    }
+}
 
 export const testAction = payload => {
     return {
@@ -63,3 +79,4 @@ export const deletePost = id => {
         id
     }
 }
+

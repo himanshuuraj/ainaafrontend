@@ -3,9 +3,11 @@ import { REGISTER_USER_INFO,
     VERIFY_EMAIL, 
     CREATE_POST, 
     GET_ALL_POSTS,
-    DELETE_POST
+    DELETE_POST,
+    UPDATE_USER_DETAILS,
+    GET_USER_DETAIL
  } from "./../redux/constants";
-import { getApiCall, postApiCall, deleteApiCall } from "./../global/request";
+import { getApiCall, postApiCall, deleteApiCall, putApiCall } from "./../global/request";
 import * as Api from "./../global/api";
 import {AsyncStorage} from 'react-native';
 import { Actions } from 'react-native-router-flux';
@@ -51,7 +53,7 @@ function* verifyEmailSaga(action){
             if(!userInfo){
                 alert(response.message);
             }else{
-                yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(response));
+                yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(response.body));
                 Actions.home();
             }
         }
@@ -115,12 +117,55 @@ function* deletePostSaga(action){
     }
 }
 
+function* updateUserDetails(action){
+    try {
+        let state = yield select();
+        let userData = state.testReducer.userInfo;
+        let url = Api.apiToUpdateUserInfo;
+        url = url.replace('{id}', userData._id);
+        userData = {...userData, ...action.userData};
+        console.log("USERDATA", userData, url);
+        let response = yield call(putApiCall, url, userData);
+        console.log("RESPONSE", response);
+        if(response.success){
+            let userInfo = response.body;
+            yield put(setData({ userInfo }));
+            yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(userInfo));
+            Actions.home();
+        }else{
+            alert(response.message);
+        }
+    } catch (e) {
+        alert(JSON.stringify(e));
+    }
+}
+
+function* getUserDetailSaga(action){
+    try{
+        let url = Api.apiToGetUserInfo;
+        url = url.replace('{id}', action.id);
+        let response = yield call(getApiCall, url);
+        console.log("RESPONSE", response);
+        if(!response.success){
+            yield put(setData({ errorModalInfo : { showModal : true, message : "Error in reteriving userInfo", title : "Success" } }));
+        }else{
+            yield put(setData({ userInfo : response.body }));
+            yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(response.body));
+        }
+    }catch(err){
+        alert(JSON.stringify(err));
+    }
+}
+
+
 const mySaga = [
     takeLatest( REGISTER_USER_INFO, registerUserInfoSaga ),
     takeLatest( VERIFY_EMAIL, verifyEmailSaga),
     takeLatest( CREATE_POST, createPostSaga),
     takeLatest( GET_ALL_POSTS, getAllPostsSaga ),
-    takeLatest( DELETE_POST, deletePostSaga )
+    takeLatest( DELETE_POST, deletePostSaga ),
+    takeLatest( UPDATE_USER_DETAILS, updateUserDetails ),
+    takeLatest( GET_USER_DETAIL, getUserDetailSaga)
 ];
 
 export default mySaga;

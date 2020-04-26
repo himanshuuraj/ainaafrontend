@@ -17,3 +17,5 @@ export const apiToCreatePost = HOST + "/post/create";
 export const apiToGetAllPosts = HOST + "/post/start/0/count/100"
 
 export const apiToDeletePost = HOST + "/post/{id}/delete";
+
+export const apiToGetUserData = HOST + "/userInfo/{id}";

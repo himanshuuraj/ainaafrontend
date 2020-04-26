@@ -1,19 +1,18 @@
-import React, { useReducer, useState, useContext, useRef } from 'react';
+import React, { useReducer, useState, useContext, useRef, useEffect } from 'react';
 import {
   Container,
   Content,
 } from "native-base";
+import {AsyncStorage} from 'react-native';
 import {
   Color,
   viewObj,
   textObj
 } from "../global/util";
-import {bindActionCreators} from 'redux';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import HeaderSection from "./../components/header";
 import JNVList from "./../components/jnvList";
-import { setData } from "./../redux/action";
-import GradientView from "./../components/gradientView";
+import { setData, updateUserDetails } from "./../redux/action";
 import { Text, View, TextInput, Image, Touch } from './../ui-kit';
 
 const initialState = {
@@ -23,6 +22,12 @@ const initialState = {
 }
 
 const reducer = (state, { field, value }) => {
+  if(field == "userInfo"){
+    return {
+      ...state,
+      ...value
+    }
+  }
   if(field.includes(".")){
     let field2 = field.split(".")[1];
     let field1 = field.split(".")[0];
@@ -43,22 +48,37 @@ const reducer = (state, { field, value }) => {
 
 export default props => {
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatchStateAction] = useReducer(reducer, initialState);
+
+  const dispatch = useDispatch()
+  const setDataAction = (arg) => dispatch(setData(arg))
+
+  let userInfo = useSelector(state => state.testReducer.userInfo) || []
+  console.log(userInfo, "USERINFO");
+
+  useEffect(() => {
+    this.onMount();
+  }, []);
+
+  useEffect(() => {
+    dispatchStateAction({ field : "userInfo", value : userInfo });
+  }, [userInfo]);
+
+  onMount = async() => {
+    let userInfo = await AsyncStorage.getItem('userInfo');
+    console.log("userInfo", userInfo);
+    userInfo = JSON.parse(userInfo);
+    dispatchStateAction({ field : "userInfo", value : userInfo });
+  } 
+
+  hideShowPickArea = () => setDataAction({ pickJNV : { show : false } })
 
   formOnChangeText = (field, value) => {
-    dispatch({ field, value });
+    dispatchStateAction({ field, value });
   }
 
-  hideShowPickArea = () => {
-    this.props.setData({
-      pickJNV : {
-        show : false
-    }
-    });
-  }
-
-  selectedArea = jnv => {
-    this.updateData({ jnv });
+  selectedArea = value => {
+    dispatchStateAction({ field : "jnv", value });
   }
   
   permanentAddress = () => {
@@ -153,13 +173,7 @@ export default props => {
         <Text style={{ ...textObj }} t={'Navodaya Details'} />
           <View ph={8} pt={16} pb={4}>
             <Text t={'Navodaya Name'} />
-            <Touch onPress={() => {
-                  // this.props.setData({
-                  //   pickJNV : {
-                  //     show : true
-                  //   }
-                  // });
-                }}>
+            <Touch onPress={() => { setDataAction({ pickJNV : { show : true } }) }}>
               <TextInput ml nl={2} uc={"#bbb"} ph="JNV Katihar" pl={16} editable={false}
                 onChangeText={this.formOnChangeText} name={'jnv.area'} value={state.jnv.area}/>
             </Touch>
@@ -218,6 +232,7 @@ export default props => {
     return <Touch jc mb={40} w={'100%'} br={4} mr={8} fl={1} g s={16} c={Color.themeFontColor} b t={'UPDATE'}
           onPress={e => {
             console.log(state, "STATE");
+            dispatch(updateUserDetails(state));
           }}
         />
   }
@@ -244,60 +259,46 @@ export default props => {
     )
   }
 
-    return (
-      <Container>
-        <HeaderSection title={'Profile'} />
-        <Content style={{
-          backgroundColor : Color.backgroundThemeColor,
-          padding : 16,
-          width : "100%"
-        }}>
-          {
-            this.profilePic()
-          }
-          {
-            this.nameUI()
-          }
-          {
-            this.communicationDetails()
-          }
-          {
-            this.statusUI()
-          }
-          {
-            this.bloodGroup()
-          }
-          {
-            this.navodayaDetails()
-          }
-          {
-            this.currentAddress()
-          }
-          {
-            this.permanentAddress()
-          }
-          {
-            this.areaOfInterest()
-          }
-          {
-            this.updateUI()
-          }
-          <JNVList hideShowPickArea={this.hideShowPickArea} selectedArea={this.selectedArea}/>
-        </Content>
-      </Container>
-    );
+  return (
+    <Container>
+      <HeaderSection title={'Profile'} />
+      <Content style={{
+        backgroundColor : Color.backgroundThemeColor,
+        padding : 16,
+        width : "100%"
+      }}>
+        {
+          this.profilePic()
+        }
+        {
+          this.nameUI()
+        }
+        {
+          this.communicationDetails()
+        }
+        {
+          this.statusUI()
+        }
+        {
+          this.bloodGroup()
+        }
+        {
+          this.navodayaDetails()
+        }
+        {
+          this.currentAddress()
+        }
+        {
+          this.permanentAddress()
+        }
+        {
+          this.areaOfInterest()
+        }
+        {
+          this.updateUI()
+        }
+        <JNVList hideShowPickArea={this.hideShowPickArea} selectedArea={this.selectedArea}/>
+      </Content>
+    </Container>
+  );
 }
-
-// function mapStateToProps(state, props) {
-//   return {
-//       data : state.testReducer.test
-//   }
-// }
-
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({
-//     setData
-//   }, dispatch);
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
