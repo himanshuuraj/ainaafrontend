@@ -1,10 +1,8 @@
-import React, {Component} from 'react';
+import React, { useReducer, useState, useContext, useRef } from 'react';
 import {
   Container,
   Content,
-  Text,
 } from "native-base";
-import { View, TextInput, Image, TouchableOpacity, TouchableHighlight } from "react-native";
 import {
   Color,
   viewObj,
@@ -16,17 +14,40 @@ import HeaderSection from "./../components/header";
 import JNVList from "./../components/jnvList";
 import { setData } from "./../redux/action";
 import GradientView from "./../components/gradientView";
+import { Text, View, TextInput, Image, Touch } from './../ui-kit';
 
-class ProfilePage extends Component {
+const initialState = {
+  currentAddress: {},
+  permanentAddress: {},
+  jnv : {},
+}
 
-  state = {
-    activeScreen  : 'home',
-    userData : {
-      currentAddress : {},
-      permanentAddress : {},
-      jnv : {}
+const reducer = (state, { field, value }) => {
+  if(field.includes(".")){
+    let field2 = field.split(".")[1];
+    let field1 = field.split(".")[0];
+    let obj = {};
+    obj[field1] = state[field1];
+    obj[field1] = { ...obj[field1], [field2]: value };
+    obj[field1][field2] = value;
+    return {
+      ...state,
+      ...obj
     }
-  };
+  }
+  return {
+    ...state,
+    [field]: value
+  }
+}
+
+export default props => {
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  formOnChangeText = (field, value) => {
+    dispatch({ field, value });
+  }
 
   hideShowPickArea = () => {
     this.props.setData({
@@ -39,226 +60,71 @@ class ProfilePage extends Component {
   selectedArea = jnv => {
     this.updateData({ jnv });
   }
-
-  updateData = obj => {
-    let userData = this.state.userData;
-    userData = { ...userData, ...obj };
-    this.setState({userData});
-  } 
   
   permanentAddress = () => {
     return (
-      <View style={{ ...viewObj, marginBottom : 8 }}>
-          <Text style={{
-            ...textObj
-          }}>Permanent Address</Text>
-          <View style={{
-            paddingHorizontal : 8,
-            paddingTop : 16,
-            paddingBottom : 4
-          }}>
-            <Text>Line1</Text>
-            <TextInput 
-              multiline
-              numberOfLines={2}
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16
-              }}
-              placeholder="Belmonte Heights"
-              onChangeText={line1 => {
-                let permanentAddress = this.state.userData.permanentAddress;
-                permanentAddress.line1 = line1;
-                this.updateData({ permanentAddress });
-              }}
-              value={this.state.userData.permanentAddress.line1}
-              />
-            <Text>Line2</Text>
-            <TextInput
-              multiline
-              numberOfLines={2}
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16
-              }}
-              placeholder="18th B Main Road"
-              onChangeText={line2 => {
-                let permanentAddress = this.state.userData.permanentAddress;
-                permanentAddress.line2 = line2;
-                this.updateData({ permanentAddress });
-              }}
-              value={this.state.userData.permanentAddress.line2}
-              />
-            <Text>LandMark</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 4
-              }}
-              placeholder="near Cult.fit Gym"
-              onChangeText={landmark => {
-                let permanentAddress = this.state.userData.permanentAddress;
-                permanentAddress.landmark = landmark;
-                this.updateData({ permanentAddress });
-              }}
-              value={this.state.userData.permanentAddress.landmark}
-              />
-            <Text>City</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 4
-              }}
-              placeholder="Patna"
-              onChangeText={city => {
-                let permanentAddress = this.state.userData.permanentAddress;
-                permanentAddress.city = city;
-                this.updateData({ permanentAddress });
-              }}
-              value={this.state.userData.permanentAddress.city}
-              />
-            <Text>State</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 4
-              }}
-              placeholder="Bihar"
-              onChangeText={state => {
-                let permanentAddress = this.state.userData.permanentAddress;
-                permanentAddress.state = state;
-                this.updateData({ permanentAddress });
-              }}
-              value={this.state.userData.permanentAddress.state}
-              />
-            <Text>PinCode</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 4
-              }}
-              placeholder="560034"
-              keyboardType='numeric'
-              onChangeText={pinCode => {
-                let permanentAddress = this.state.userData.permanentAddress;
-                permanentAddress.pinCode = pinCode;
-                this.updateData({ permanentAddress });
-              }}
-              value={this.state.userData.permanentAddress.pinCode}
-              />
-          </View>
+      <View mb={8} style={{ ...viewObj }}>
+        <Text style={{ ...textObj  }} t={'Permanent Address'} />
+        <View pt={16} pb={8} ph={8}>
+          <Text t={'Line1'} />
+          <TextInput ml nl={2} uc={"#bbb"} ph="Belmonte Heights" pl={16}
+            onChangeText={this.formOnChangeText} name={'permanentAddress.line1'}
+            value={state.permanentAddress.line1}/>
+          <Text t={'Line2'} />
+          <TextInput ml nl={2} uc={"#bbb"} ph="18th B Main Road" pl={16}
+            onChangeText={this.formOnChangeText} name={'permanentAddress.line2'}
+            value={state.permanentAddress.line2}/>
+          <Text t={'LandMark'} />
+          <TextInput ml nl={2} uc={"#bbb"} ph="City Mall" pl={16} pb={4}
+            onChangeText={this.formOnChangeText} name={'permanentAddress.landmark'}
+            value={state.permanentAddress.landmark}/>
+          <Text t={'City'} />
+          <TextInput ml nl={2} uc={"#bbb"} ph="Delhi" pl={16} pb={4}
+            onChangeText={this.formOnChangeText} name={'permanentAddress.city'}
+            value={state.permanentAddress.city}/>
+          <Text t={'State'} />
+          <TextInput ml nl={2} uc={"#bbb"} ph="Bihar" pl={16} pb={4}
+            onChangeText={this.formOnChangeText} name={'permanentAddress.state'}
+            value={state.permanentAddress.state}/>
+          <Text t={'Pincode'} />
+          <TextInput ml nl={2} uc={"#bbb"} ph="560035" pl={16} pb={4}
+            onChangeText={this.formOnChangeText} name={'permanentAddress.pincode'}
+            value={state.permanentAddress.pincode}/>
+        </View>
       </View>
     );
   }
 
   currentAddress = () => {
     return (
-      <View style={{ ...viewObj, marginBottom : 8 }}>
-          <Text style={{
-            ...textObj
-          }}>Current Address</Text>
-          <View style={{
-            paddingHorizontal : 8,
-            paddingTop : 16,
-            paddingBottom : 8
-          }}>
-            <Text>Line1</Text>
-            <TextInput 
-              multiline
-              numberOfLines={2}
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16
-              }}
-              placeholder="Belmonte Heights"
-              onChangeText={line1 => {
-                let currentAddress = this.state.userData.currentAddress;
-                currentAddress.line1 = line1;
-                this.updateData({ currentAddress });
-              }}
-              value={this.state.userData.currentAddress.line1}/>
-            <Text>Line2</Text>
-            <TextInput
-              multiline
-              numberOfLines={2}
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16
-              }}
-              placeholder="18th B Main Road"
-              onChangeText={line2 => {
-                let currentAddress = this.state.userData.currentAddress;
-                currentAddress.line2 = line2;
-                this.updateData({ currentAddress });
-              }}
-              value={this.state.userData.currentAddress.line2}
-              />
-            <Text>LandMark</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 4
-              }}
-              placeholder="near Cult.fit Gym"
-              onChangeText={landmark => {
-                let currentAddress = this.state.userData.currentAddress;
-                currentAddress.landmark = landmark;
-                this.updateData({ currentAddress });
-              }}
-              value={this.state.userData.currentAddress.landmark}
-              />
-            <Text>City</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 4
-              }}
-              placeholder="Patna"
-              onChangeText={city => {
-                let currentAddress = this.state.userData.currentAddress;
-                currentAddress.city = city;
-                this.updateData({ currentAddress });
-              }}
-              value={this.state.userData.currentAddress.city}
-              />
-            <Text>State</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 4
-              }}
-              placeholder="Bihar"
-              onChangeText={state => {
-                let currentAddress = this.state.userData.currentAddress;
-                currentAddress.state = state;
-                this.updateData({ currentAddress });
-              }}
-              value={this.state.userData.currentAddress.state}
-              />
-            <Text>PinCode</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 4
-              }}
-              placeholder="560034"
-              keyboardType='numeric'
-              onChangeText={pinCode => {
-                let currentAddress = this.state.userData.currentAddress;
-                currentAddress.pinCode = pinCode;
-                this.updateData({ currentAddress });
-              }}
-              value={this.state.userData.currentAddress.pinCode}
-              />
-          </View>
+      <View mb={8} style={{ ...viewObj }}>
+        <Text style={{ ...textObj  }} t={'Current Address'} />
+        <View pt={16} pb={8} ph={8}>
+          <Text t={'Line1'} />
+          <TextInput ml nl={2} uc={"#bbb"} ph="Belmonte Heights" pl={16}
+            onChangeText={this.formOnChangeText} name={'currentAddress.line1'}
+            value={state.currentAddress.line1}/>
+          <Text t={'Line2'} />
+          <TextInput ml nl={2} uc={"#bbb"} ph="18th B Main Road" pl={16}
+            onChangeText={this.formOnChangeText} name={'currentAddress.line2'}
+            value={state.currentAddress.line2}/>
+          <Text t={'LandMark'} />
+          <TextInput ml nl={2} uc={"#bbb"} ph="City Mall" pl={16} pb={4}
+            onChangeText={this.formOnChangeText} name={'currentAddress.landmark'}
+            value={state.currentAddress.landmark}/>
+          <Text t={'City'} />
+          <TextInput ml nl={2} uc={"#bbb"} ph="Delhi" pl={16} pb={4}
+            onChangeText={this.formOnChangeText} name={'currentAddress.city'}
+            value={state.currentAddress.city}/>
+          <Text t={'State'} />
+          <TextInput ml nl={2} uc={"#bbb"} ph="Bihar" pl={16} pb={4}
+            onChangeText={this.formOnChangeText} name={'currentAddress.state'}
+            value={state.currentAddress.state}/>
+          <Text t={'Pincode'} />
+          <TextInput ml nl={2} uc={"#bbb"} ph="560035" pl={16} pb={4}
+            onChangeText={this.formOnChangeText} name={'currentAddress.pincode'}
+            value={state.currentAddress.pincode}/>
+        </View>
       </View>
     );
   }
@@ -266,41 +132,16 @@ class ProfilePage extends Component {
   communicationDetails = () => {
     return (
       <View style={{ ...viewObj, marginBottom : 8 }}>
-          <Text style={{
-            ...textObj
-          }}>Communication Details</Text>
-          <View style={{
-            paddingHorizontal : 8,
-            paddingTop : 16,
-            paddingBottom : 4
-          }}>
-            <Text>Phone Number</Text>
-            <TextInput 
-              multiline
-              numberOfLines={2}
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16
-              }}
-              placeholder="1234567890"
-              onChangeText={phone => {
-                this.updateData({ phone });
-              }}
-              keyboardType='numeric'
-              value={this.state.userData.phone}/>
-            <Text>Email</Text>
-            <TextInput
-              multiline
-              numberOfLines={2}
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16
-              }}
-              placeholder="hraj3116@gmail.com"
-              onChangeText={email => {
-                this.updateData({ email });
-              }}
-              value={this.state.userData.email}/>
+          <Text style={{ ...textObj }} t={'Communication Details'} />
+          <View ph={8} pt={16} pb={4}>
+            <Text t={'Phone Number'} />
+            <TextInput uc={"#bbb"} ph="1234567890" pl={16} pb={4}
+            onChangeText={this.formOnChangeText} name={'phone'} keyboardType='numeric'
+            value={state.phone}/>
+            <Text t={'Email'} />
+            <TextInput uc={"#bbb"} ph="hraj3116@gmail.com" pl={16}
+            onChangeText={this.formOnChangeText} name={'email'}
+            value={state.email}/>
           </View>
       </View>
     );
@@ -309,79 +150,27 @@ class ProfilePage extends Component {
   navodayaDetails = () => {
     return (
       <View style={{ ...viewObj, marginBottom : 8 }}>
-          <Text style={{
-            ...textObj
-          }}>Navodaya Details</Text>
-          <View style={{
-            paddingHorizontal : 8,
-            paddingTop : 16,
-            paddingBottom : 4
-          }}>
-            <Text>Navodaya Name</Text>
-            <TouchableHighlight onPress={() => {
-                  this.props.setData({
-                    pickJNV : {
-                      show : true
-                    }
-                  });
+        <Text style={{ ...textObj }} t={'Navodaya Details'} />
+          <View ph={8} pt={16} pb={4}>
+            <Text t={'Navodaya Name'} />
+            <Touch onPress={() => {
+                  // this.props.setData({
+                  //   pickJNV : {
+                  //     show : true
+                  //   }
+                  // });
                 }}>
-              <TextInput 
-                multiline
-                numberOfLines={2}
-                underlineColorAndroid="#bbb"
-                style={{
-                  paddingLeft : 16
-                }}
-                editable={false}
-                placeholder="JNV Katihar"
-                value={this.state.userData.jnv.area}
-                />
-              </TouchableHighlight>
-            <Text>Admission Year</Text>
-            <TextInput
-              multiline
-              numberOfLines={2}
-              keyboardType='numeric'
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16
-              }}
-              placeholder="2012"
-              onChangeText={admissionYear => {
-                this.updateData({ admissionYear });
-              }}
-              value={this.state.userData.admissionYear}/>
-            <Text>Passout Year</Text>
-            <TextInput
-              multiline
-              numberOfLines={2}
-              keyboardType='numeric'
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16
-              }}
-              placeholder="2012"
-              onChangeText={passoutYear => {
-                this.updateData({ passoutYear });
-              }}
-              value={this.state.userData.passoutYear}/>
-            {/* <Text>Migration</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 4
-              }}
-              placeholder="JNV-Patna"/> */}
-            {/* <Text>Address of JNV</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              numberOfLines = {4}
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 4
-              }}
-              placeholder="JNV araria R.S. 560034"/> */}
+              <TextInput ml nl={2} uc={"#bbb"} ph="JNV Katihar" pl={16} editable={false}
+                onChangeText={this.formOnChangeText} name={'jnv.area'} value={state.jnv.area}/>
+            </Touch>
+            <Text t={'Admission Year'}/>
+            <TextInput ml nl={2} uc={"#bbb"} ph="2012" pl={16}
+              onChangeText={this.formOnChangeText} name={'admissionYear'} keyboardType='numeric'
+              value={state.admissionYear}/>
+            <Text t={'Passout Year'} />
+            <TextInput ml nl={2} uc={"#bbb"} ph="2016" pl={16}
+              onChangeText={this.formOnChangeText} name={'passoutYear'} keyboardType='numeric'
+              value={state.passoutYear}/>
           </View>
       </View>
     );
@@ -390,111 +179,71 @@ class ProfilePage extends Component {
   profilePic = () => {
     return (
       <View style={{ ...viewObj, marginTop : 16, paddingVertical : 8, justifyContent : 'center', alignItems : 'center' }}>
-            <Text style={{
-              ...textObj
-            }}>Profile Pic</Text>
-            <Image source={{uri: 'https://image.cnbcfm.com/api/v1/image/106069136-1565284193572gettyimages-1142580869.jpeg?v=1566321345&w=1400&h=950'}} 
-               style={{ width: 160, height: 160, borderRadius: 160/ 2  }}/>
-               <TouchableOpacity style={{
-                 paddingVertical : 6,
-                 width : 160,
-                 marginVertical : 8,
-                 borderRadius : 8,
-                 borderWidth : 1,
-                 justifyContent : 'center',
-                 alignItems : 'center'
-               }}>
-                  <Text style={{ fontSize : 16 }}>EDIT</Text>
-                </TouchableOpacity>
+        <Text style={{ ...textObj }} t={'Profile Pic'} />
+        <Image uri={'https://image.cnbcfm.com/api/v1/image/106069136-1565284193572gettyimages-1142580869.jpeg?v=1566321345&w=1400&h=950'}
+            w={160} h={160} br={80}/>
+        <Touch g w={160} mt={8} mb={8} br={4} s={16} h={36} c={'#fff'} t={'EDIT'}/>
       </View>
     )
   }
 
   bloodGroup = () => {
     return <View style={{ ...viewObj }}>
-            <Text style={{
-              ...textObj
-            }}>Blood Group</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              placeholder="B+"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 2,
-                height : 40,
-                marginTop : 4
-              }}
-              onChangeText={bloodGroup => {
-                this.updateData({bloodGroup});
-              }}
-              value={this.state.userData.bloodGroup}/>
+            <Text style={{ ...textObj }} t={'Blood Group'} />
+            <TextInput ml nl={2} uc={"#bbb"} ph="B+" pl={16} pb={2} h={40} mt={4}
+              onChangeText={this.formOnChangeText} name={'bloodGroup'}
+              value={state.bloodGroup}/>
           </View>
   }
 
-  name = () => {
+  nameUI = () => {
     return (
       <View style={{ ...viewObj, marginBottom : 8 }}>
-          <Text style={{
-            ...textObj
-          }}>Full Name</Text>
-          <View style={{
-            paddingHorizontal : 8,
-            paddingTop : 16,
-            paddingBottom : 4
-          }}>
-            <Text>First Name</Text>
-            <TextInput 
-              multiline
-              numberOfLines={2}
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16
-              }}
-              placeholder="Prem"
-              onChangeText={firstName => {
-                this.updateData({ firstName });
-              }}
-              value={this.state.userData.firstName}/>
-            <Text>Last Name</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              style={{
-                paddingLeft : 16
-              }}
-              placeholder="Piyush"
-              onChangeText={lastName => {
-                this.updateData({ lastName });
-              }}
-              value={this.state.userData.lastName}/>
+          <Text style={{ ...textObj }} t={'Full Name'} />
+          <View ph={8} pt={16} pb={4}>
+            <Text t={'First Name'} />
+            <TextInput ml nl={2} uc={"#bbb"} ph="Prem" pl={16} pb={2} h={40} mt={4}
+              onChangeText={this.formOnChangeText} name={'firstName'}
+              value={state.firstName}/>
+            <Text t={'Last Name'} />
+            <TextInput ml nl={2} uc={"#bbb"} ph="Prem" pl={16} pb={2} h={40} mt={4}
+              onChangeText={this.formOnChangeText} name={'lastName'}
+              value={state.lastName}/>
           </View>
       </View>
     );
   }
 
   updateUI = () => {
-    return <TouchableOpacity
-          style={{
-              flex : 1,
-              justifyContent : 'center',
-              marginBottom : 40,
-              height : 48,
-              width : '100%',
-              borderRadius : 4,
-              marginRight : 8
-          }}
+    return <Touch jc mb={40} w={'100%'} br={4} mr={8} fl={1} g s={16} c={Color.themeFontColor} b t={'UPDATE'}
           onPress={e => {
-            console.log(this.state);
+            console.log(state, "STATE");
           }}
-      >
-        <GradientView h={'100%'}>
-            <Text style={{ fontSize : 14, color : Color.themeFontColor, fontWeight : 'bold', textAlign : 'center' }}>
-                UPDATE
-            </Text>
-        </GradientView>
-      </TouchableOpacity>
+        />
   }
 
-  render(){
+  statusUI = () => {
+    return (
+      <View style={{ ...viewObj }}>
+        <Text style={{ ...textObj }} t={'Current Status'} />
+        <TextInput ml nl={2} uc={"#bbb"} ph="Job/Study/Others" pl={16} pb={2} h={40} mt={4}
+              onChangeText={this.formOnChangeText} name={'status'}
+              value={state.status}/>
+      </View>
+    )
+  }
+
+  areaOfInterest = () => {
+    return (
+      <View mb={32} style={{ ...viewObj }}>
+        <Text style={{ ...textObj }} t={'Area Of Interest'} />
+        <TextInput uc={"#bbb"} ph="Playing football" pl={16} pb={2} h={40} mt={4}
+              onChangeText={this.formOnChangeText} name={'areaOfInterest'}
+              value={state.areaOfInterest}/>
+      </View>
+    )
+  }
+
     return (
       <Container>
         <HeaderSection title={'Profile'} />
@@ -507,26 +256,14 @@ class ProfilePage extends Component {
             this.profilePic()
           }
           {
-            this.name()
+            this.nameUI()
           }
-          
           {
             this.communicationDetails()
           }
-          <View style={{ ...viewObj }}>
-            <Text style={{
-              ...textObj
-            }}>Current Status</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              placeholder="Job/Study/Others"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 2,
-                height : 40,
-                marginTop : 4
-              }}/>
-          </View>
+          {
+            this.statusUI()
+          }
           {
             this.bloodGroup()
           }
@@ -539,42 +276,28 @@ class ProfilePage extends Component {
           {
             this.permanentAddress()
           }
-          <View style={{ ...viewObj, marginBottom : 32 }}>
-            <Text style={{
-              ...textObj
-            }}>Area Of Interest</Text>
-            <TextInput
-              underlineColorAndroid="#bbb"
-              placeholder="Playing football"
-              style={{
-                paddingLeft : 16,
-                paddingBottom : 2,
-                height : 40,
-                marginTop : 4
-              }}/>
-          </View>
-
+          {
+            this.areaOfInterest()
+          }
           {
             this.updateUI()
           }
-
           <JNVList hideShowPickArea={this.hideShowPickArea} selectedArea={this.selectedArea}/>
         </Content>
       </Container>
     );
-  }
 }
 
-function mapStateToProps(state, props) {
-  return {
-      data : state.testReducer.test
-  }
-}
+// function mapStateToProps(state, props) {
+//   return {
+//       data : state.testReducer.test
+//   }
+// }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    setData
-  }, dispatch);
-}
+// function mapDispatchToProps(dispatch) {
+//   return bindActionCreators({
+//     setData
+//   }, dispatch);
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
+// export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

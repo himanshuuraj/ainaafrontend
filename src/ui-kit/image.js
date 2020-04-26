@@ -3,7 +3,7 @@ import { Image } from 'react-native';
 import Touch from "./touch";
 
 export default (props) => {
-    let { t, w, h, a, r, style, uri, onPress, ...rest} = props
+    let { t, w, h, a, r, br, style, uri, onPress, ...rest} = props
 
     let st = { 
       ...{
@@ -11,7 +11,8 @@ export default (props) => {
         height : h ? h : undefined,
         position : a ? 'absolute' : undefined,
         top : t ? t : undefined,
-        right : r ? r : undefined
+        right : r ? r : undefined,
+        borderRadius : br ? br : undefined
       }, ...style};
 
     if (onPress) 
