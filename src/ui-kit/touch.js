@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import GradientView from "./gradientView";
 
 export default (props) => {
-    let {c, h, r, g, t, b, w, a, s, center, jc, ai, style, bc, boc, bw, br, le, bo, ri, to, ph, mt, mb, ml, mr, pl, pr, pt, fl, pb, ...rest } = props
+    let {c, h, r, g, t, b, w, a, s, center, jc, ai, style, bc, boc, bw, br, le, bo, ri, to, ph, mt, mb, ml, mr, pl, pr, pt, fl, pb, pa, ...rest } = props
     c = c || "#4a4a4a";
 
     let st = { 
@@ -23,6 +23,7 @@ export default (props) => {
             bottom : bo ? bo : undefined,
             right : ri ? ri : undefined,
             top : to ? to : undefined,
+            padding : pa ? pa : undefined,
             paddingHorizontal : ph ? ph : undefined,
             marginTop : mt ? mt : undefined,
             marginBottom : mb ? mb : undefined,

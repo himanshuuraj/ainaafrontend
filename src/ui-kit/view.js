@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 export default (props) => {
-    let { c, a, row, jc, ai, h, w, style, le, bo, ri, to, fl, mt, mb, ml, mr, pl, pr, pt, pb, ph, ...rest} = props
+    let { c, a, row, jc, ai, h, w, style, le, bo, ri, to, fl, mt, mb, ml, mr, pl, pr, pt, pb, ph, zi, pa, br, bw, bc, ...rest} = props
 
     let st = { 
         ...{
@@ -22,11 +22,16 @@ export default (props) => {
           marginBottom : mb ? mb : undefined,
           marginLeft : ml ? ml : undefined,
           marginRight : mr ? mr : undefined,
+          padding : pa ? pa : undefined,
           paddingLeft : pl ? pl : undefined,
           paddingRight : pr ? pr : undefined,
           paddingTop : pt ? pt : undefined,
           paddingBottom : pb ? pb : undefined,
           paddingHorizontal : ph ? ph : undefined,
+          zIndex : zi ? zi : undefined,
+          borderWidth : bw ? bw : undefined,
+          borderRadius : br ? br : undefined,
+          borderColor : bc ? bc : undefined
         }, ...style};
 
     return (

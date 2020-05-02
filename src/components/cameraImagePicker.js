@@ -1,26 +1,21 @@
 import React, {Component} from 'react';
 import { ImagePicker } from 'expo';
 import { Touch, Text } from "../ui-kit";
-import Camera from "./camera";
-import { View } from "react-native";
+import { useSelector, useDispatch } from 'react-redux';
+import { setData } from "./../redux/action";
 
 
 export default () => {
 
-    _pickImage = async () => {
-        console.log("AAAA");
-        try{
-        let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
-            aspect: [4, 3],
-        });
+    const dispatch = useDispatch()
+    const setDataAction = (arg) => dispatch(setData(arg))
 
-        if (!result.cancelled) {
-            // this.setState({ image: result.uri });
-        }
-        }catch(e){
-            console.log(e, "ERR");
-        }
+    _pickImage = async () => {
+        setDataAction({
+            camera: {
+                show : true
+            }
+        })
     };
 
     return (

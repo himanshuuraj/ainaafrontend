@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
   StatusBar,
-  Dimensions
+  Dimensions,
+  Image
 } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
@@ -18,11 +19,8 @@ export default props => {
   let [cameraPermission, setCameraPermission] = useState(null);
   let [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   let [showCamera, toggleCamera] = useState(true);
+  let [photo, setPhoto] = useState("");
   const cameraRef = useRef(null);
-
-  let cameraSelector = useSelector(state => state.testReducer.camera)
-  if(!cameraSelector.show)
-    return null
 
   // const dispatch = useDispatch()
   // const incrementCounter = useCallback(
@@ -87,8 +85,11 @@ export default props => {
     console.log(cameraRef)
     try{
       if (cameraRef) {
-        let photo = await cameraRef.current.takePictureAsync();
+        let photo = "";
+        if(cameraRef.current)
+          photo = await cameraRef.current.takePictureAsync();
         console.group(photo, "PHOTO")
+        setPhoto(photo.uri);
         // this.ajaxCall(photo, 'camera');
       }else{
         this.props.setData({
@@ -117,6 +118,10 @@ export default props => {
       : Camera.Constants.Type.back);
   }
 
+  let cameraSelector = useSelector(state => state.testReducer.camera)
+  if(!cameraSelector.show)
+    return null
+
   if (cameraPermission === null)
     return null;
 
@@ -124,20 +129,27 @@ export default props => {
     return null;
 
   return (
-    <View a h={height} w={width} to={StatusBar.currentHeight} le={0}>
-        <View fl={1}>
-            <Camera ref={cameraRef} type={cameraType} style={{ flex: 1 }}>
-                <View row c={'transparent'} fl={1}>
-                    <Touch h={36} jc a s={18} c={Color.white} t={'CLOSE'} w={120} 
-                        boc={Color.white} br={4} bw={1} to={StatusBar.currentHeight} ri={10}
-                        pH={20} onPress={hideCamera}/>
-                    <Touch
-                        a s={18} c={'#fff'} t={'FLIP'} h={36} ai jc w={60}
-                        boc={Color.white} br={4} bw={1} le={10} bo={10}
-                        onPress={flipCamera}/>
-                </View>
-            </Camera>
-        </View>
+    <View a h={height} w={width} le={0}>
+        {
+          !photo ? <View fl={1}>
+              <Camera ref={cameraRef} type={cameraType} style={{ flex: 1 }}>
+                  <View row c={'transparent'} fl={1}>
+                      <Touch h={36} jc a s={18} c={Color.white} t={'CLOSE'} w={120} 
+                          boc={Color.white} br={4} bw={1} to={StatusBar.currentHeight} ri={10}
+                          pH={20} onPress={hideCamera}/>
+                      <Touch
+                          a s={18} c={'#fff'} t={'FLIP'} h={36} ai jc w={60}
+                          boc={Color.white} br={4} bw={1} le={10} bo={10}
+                          onPress={flipCamera}/>
+                  </View>
+              </Camera>
+          </View> : null
+        }
+        { 
+          photo ? <View fl={1}>
+            <Image source={{uri : photo}} style={{width : '100%', height : '100%'}}/>
+          </View> : null
+        }
         <Touch g w={width}
           c={'#fff'} s={18} t={'Save Image'} 
           boc={Color.white} onPress={snap}/>

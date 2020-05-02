@@ -54,7 +54,6 @@ export default props => {
   const setDataAction = (arg) => dispatch(setData(arg))
 
   let userInfo = useSelector(state => state.testReducer.userInfo) || []
-  console.log(userInfo, "USERINFO");
 
   useEffect(() => {
     this.onMount();
@@ -196,7 +195,13 @@ export default props => {
         <Text style={{ ...textObj }} t={'Profile Pic'} />
         <Image uri={'https://image.cnbcfm.com/api/v1/image/106069136-1565284193572gettyimages-1142580869.jpeg?v=1566321345&w=1400&h=950'}
             w={160} h={160} br={80}/>
-        <Touch g w={160} mt={8} mb={8} br={4} s={16} h={36} c={'#fff'} t={'EDIT'}/>
+        <Touch onPress={() => {
+          setDataAction({
+            cameraModal : {
+              show : true
+            }
+          })
+        }} g w={160} mt={8} mb={8} br={4} s={16} h={36} c={'#fff'} t={'EDIT'}/>
       </View>
     )
   }

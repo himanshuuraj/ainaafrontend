@@ -6,16 +6,16 @@ import { Touch, Text } from "./../ui-kit";
 export default () => {
 
     _pickImage = async () => {
-        console.log("AAAA");
         try{
-        let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
-            aspect: [4, 3],
-        });
+            let result = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: [1, 1],
+            });
 
-        if (!result.cancelled) {
-            // this.setState({ image: result.uri });
-        }
+            if (!result.cancelled) {
+                alert(result.uri)
+                // this.setState({ image: result.uri });
+            }
         }catch(e){
             console.log(e, "ERR");
         }
