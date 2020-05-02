@@ -43,9 +43,7 @@ export default () => {
           console.log(response, "Response");
           setDataAction({ loading : { show : false } })
           if(response.success){
-            console.log(response.message);
-          }else{
-              
+            setDataAction({ loadedImageUrl : response.message });
           }
         }catch(err){
             setDataAction({ loading : { show : false } })

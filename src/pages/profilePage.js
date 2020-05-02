@@ -12,7 +12,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import HeaderSection from "./../components/header";
 import JNVList from "./../components/jnvList";
-import { setData, updateUserDetails } from "./../redux/action";
+import { setData, updateUserDetails, getUserDetail } from "./../redux/action";
 import { Text, View, TextInput, Image, Touch } from './../ui-kit';
 
 const initialState = {
@@ -53,7 +53,8 @@ export default props => {
   const dispatch = useDispatch()
   const setDataAction = (arg) => dispatch(setData(arg))
 
-  let userInfo = useSelector(state => state.testReducer.userInfo) || []
+  let userInfo = useSelector(state => state.testReducer.userInfo) || [];
+  let profilePic = useSelector(state => state.testReducer.loadedImageUrl)
 
   useEffect(() => {
     this.onMount();
@@ -63,11 +64,16 @@ export default props => {
     dispatchStateAction({ field : "userInfo", value : userInfo });
   }, [userInfo]);
 
+  useEffect(() => {
+    userInfo["profilePic"] = profilePic;
+    dispatchStateAction({ field : "userInfo", value : userInfo });
+  }, [profilePic]);
+
   onMount = async() => {
     let userInfo = await AsyncStorage.getItem('userInfo');
-    console.log("userInfo", userInfo);
     userInfo = JSON.parse(userInfo);
-    dispatchStateAction({ field : "userInfo", value : userInfo });
+    dispatch(getUserDetail(userInfo._id));
+    // dispatchStateAction({ field : "userInfo", value : userInfo });
   } 
 
   hideShowPickArea = () => setDataAction({ pickJNV : { show : false } })
@@ -189,11 +195,11 @@ export default props => {
     );
   }
 
-  profilePic = () => {
+  profilePicUI = () => {
     return (
       <View style={{ ...viewObj, marginTop : 16, paddingVertical : 8, justifyContent : 'center', alignItems : 'center' }}>
         <Text style={{ ...textObj }} t={'Profile Pic'} />
-        <Image uri={'https://image.cnbcfm.com/api/v1/image/106069136-1565284193572gettyimages-1142580869.jpeg?v=1566321345&w=1400&h=950'}
+        <Image uri={profilePic ? profilePic : (userInfo.profilePic || 'https://image.cnbcfm.com/api/v1/image/106069136-1565284193572gettyimages-1142580869.jpeg?v=1566321345&w=1400&h=950')}
             w={160} h={160} br={80}/>
         <Touch onPress={() => {
           setDataAction({
@@ -237,6 +243,8 @@ export default props => {
     return <Touch jc mb={40} w={'100%'} br={4} mr={8} fl={1} g s={16} c={Color.themeFontColor} b t={'UPDATE'}
           onPress={e => {
             console.log(state, "STATE");
+            if(profilePic)
+              state["profilePic"] = profilePic;
             dispatch(updateUserDetails(state));
           }}
         />
@@ -273,7 +281,7 @@ export default props => {
         width : "100%"
       }}>
         {
-          this.profilePic()
+          this.profilePicUI()
         }
         {
           this.nameUI()

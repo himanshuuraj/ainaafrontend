@@ -57,7 +57,9 @@ let reducer = {
 
     cameraModal : {
         show : false
-    }
+    },
+
+    loadedImageUrl : ""
 };
 
 export default (state = reducer, action) => {

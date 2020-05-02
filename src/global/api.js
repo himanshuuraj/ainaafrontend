@@ -4,7 +4,7 @@ export const HOST = "https://aqueous-woodland-65692.herokuapp.com";
 
 export const apiToInsertUserInfo = HOST + "/userInfo/create";
 
-export const apiToGetUserInfo = HOST + "/userInfo/";
+export const apiToGetUserInfo = HOST + "/userInfo/{id}";
 
 export const apiToUpdateUserInfo = HOST + "/userInfo/{id}/update";
 
