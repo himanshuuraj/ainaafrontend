@@ -9,7 +9,7 @@ import { setData } from "./../redux/action";
 
 let { width, height } = Dimensions.get('window');
 
-export default props => {
+export default () => {
 
     const dispatch = useDispatch()
     const setDataAction = (arg) => dispatch(setData(arg))
@@ -30,10 +30,10 @@ export default props => {
         <View a c={"rgba(52, 52, 52, 0.6)"} jc ai zi={999} to={0} le={0} 
             h={height} w={width}>
             <View w={width-48} br={8} c={'white'} jc pa={16} bw={1} bc={Color.themeColor}>
-                <Touch pb={8} onPress={this.hideCameraModal}>
+                {/* <Touch pb={8} onPress={this.hideCameraModal}>
                     <CameraImagePicker />
-                </Touch>
-                <Touch pt={8} onPress={this.hideCameraModal}>
+                </Touch> */}
+                <Touch pt={0} onPress={this.hideCameraModal}>
                     <GalleryImagePicker />
                 </Touch>
             </View>

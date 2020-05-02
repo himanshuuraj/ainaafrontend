@@ -1,5 +1,4 @@
 import * as Api from "./api";
-import {AsyncStorage} from 'react-native';
 
 export let getApiCall = (url) => {
     return fetch(url, {
@@ -20,7 +19,6 @@ export let getApiCall = (url) => {
 }
 
 export let postApiCall = (url, bodyObj) => {
-    //console.log("REQUEST", bodyObj);
     return fetch(url, {
             method: 'POST',
             headers: {
@@ -31,7 +29,6 @@ export let postApiCall = (url, bodyObj) => {
             }).then((response) => response.json(), 
             err => {
                 console.log("ERR", err);
-                // alert(err.message);
                 return err;
             })
             .then((responseJson) => {
@@ -55,7 +52,6 @@ export let putApiCall = (url, bodyObj) => {
             }).then((response) => response.json(), 
             err => {
                 console.log("ERR", err);
-                // alert(err.message);
                 return err;
             })
             .then((responseJson) => {
@@ -108,26 +104,4 @@ export let uploadOnAWSRequest = (bodyObj) => {
         xhr.send(bodyObj);
     });
     return promise;
-
-    // return fetch(url, {
-    //     method: 'POST',
-    //     headers: {
-    //         Accept: 'application/json',
-    //         'Content-Type': 'multipart/form-data',
-    //     },
-    //     body: JSON.stringify(bodyObj),
-    //     }).then((response) => response.json(), 
-    //     err => {
-    //         console.log("ERR", err);
-    //         alert(err.message);
-    //         return err;
-    //     })
-    //     .then((responseJson) => {
-    //         return responseJson;
-    //     })
-    //     .catch((error) => {
-    //         console.error("ERROR",error);
-    //         return error;
-    //     });
-    
 }
