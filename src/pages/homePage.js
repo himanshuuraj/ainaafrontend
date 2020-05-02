@@ -21,9 +21,9 @@ export default props => {
   }, []);
 
   let allPosts = useSelector(state => state.testReducer.allPosts) || []
-  console.log(allPosts, "POSTS");
-
   const setDataAction = (arg) => dispatch(setData(arg))
+
+  let userInfo = useSelector(state => state.testReducer.userInfo) || [];
   
   getAwsImageUrl = (imageUrl) => {
     let imageList = this.state.imageList;
@@ -81,7 +81,7 @@ export default props => {
         <Thumbnail
           small 
           size={20}
-          source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/1/14/Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg'}} />
+          source={{uri: userInfo.profilePic || 'https://upload.wikimedia.org/wikipedia/commons/1/14/Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg'}} />
         <Text style={{ marginLeft : 8 }} t={'Write your post here ...'}/>
       </TouchableOpacity>
     )
@@ -92,10 +92,10 @@ export default props => {
         <Card style={{flex: 0}} key={index}>
             <CardItem>
             <Left>
-                <Thumbnail source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/1/14/Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg'}} />
+                <Thumbnail source={{uri: feed.profilePic || 'https://upload.wikimedia.org/wikipedia/commons/1/14/Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg'}} />
                 <Body>
                     <Text t={feed.firstName + " " + feed.lastName} />
-                    <Text t={'JNV Araria (2005- 2012)'} />
+                    <Text t={feed.jnv} />
                 </Body>
             </Left>
             </CardItem>

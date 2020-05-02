@@ -75,6 +75,8 @@ function* createPostSaga(action){
         post["firstName"] = userInfo.firstName;
         post["lastName"] = userInfo.lastName;
         post["userId"] = userInfo._id;
+        post["profilePic"] = userInfo.profilePic;
+        post["jnv"] = userInfo.jnv && userInfo.jnv.area;
         yield put(setData({ loading : { show : true } }));
         let response = yield call(postApiCall, Api.apiToCreatePost, post);
         yield put(setData({ loading : { show : false } }));
