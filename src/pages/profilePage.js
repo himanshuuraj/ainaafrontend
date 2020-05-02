@@ -72,8 +72,8 @@ export default props => {
   onMount = async() => {
     let userInfo = await AsyncStorage.getItem('userInfo');
     userInfo = JSON.parse(userInfo);
-    dispatch(getUserDetail(userInfo._id));
-    // dispatchStateAction({ field : "userInfo", value : userInfo });
+    // dispatch(getUserDetail(userInfo._id));
+    dispatchStateAction({ field : "userInfo", value : userInfo });
   } 
 
   hideShowPickArea = () => setDataAction({ pickJNV : { show : false } })
@@ -199,7 +199,7 @@ export default props => {
     return (
       <View style={{ ...viewObj, marginTop : 16, paddingVertical : 8, justifyContent : 'center', alignItems : 'center' }}>
         <Text style={{ ...textObj }} t={'Profile Pic'} />
-        <Image uri={profilePic ? profilePic : (userInfo.profilePic || 'https://image.cnbcfm.com/api/v1/image/106069136-1565284193572gettyimages-1142580869.jpeg?v=1566321345&w=1400&h=950')}
+        <Image uri={profilePic ? profilePic : (state.profilePic || 'https://image.cnbcfm.com/api/v1/image/106069136-1565284193572gettyimages-1142580869.jpeg?v=1566321345&w=1400&h=950')}
             w={160} h={160} br={80}/>
         <Touch onPress={() => {
           setDataAction({
