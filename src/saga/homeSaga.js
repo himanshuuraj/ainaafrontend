@@ -20,7 +20,9 @@ function* registerUserInfoSaga(action){
         let obj = action.userData;
         let firebaseToken = yield call(AsyncStorage.getItem, 'firebaseToken');
         obj['token'] = firebaseToken;
+        yield put(setData({ loading : { show : true } }));
         let response = yield call(postApiCall, Api.apiToInsertUserInfo, obj );
+        yield put(setData({ loading : { show : false } }));
         console.log("RESPONSE", response);
         if(response.success){
             let userInfo = response.body;
@@ -44,7 +46,9 @@ function* verifyEmailSaga(action){
         let firebaseToken = yield call(AsyncStorage.getItem, 'firebaseToken');
         if(firebaseToken)
             obj.firebaseToken = firebaseToken;
+        yield put(setData({ loading : { show : true } }));
         let response = yield call(postApiCall, Api.apiToVerifyEmail, obj );
+        yield put(setData({ loading : { show : false } }));
         console.log("RESPONSE", response);
         if(!response.success){
             alert(response.message);
@@ -71,7 +75,9 @@ function* createPostSaga(action){
         post["firstName"] = userInfo.firstName;
         post["lastName"] = userInfo.lastName;
         post["userId"] = userInfo._id;
+        yield put(setData({ loading : { show : true } }));
         let response = yield call(postApiCall, Api.apiToCreatePost, post);
+        yield put(setData({ loading : { show : false } }));
         console.log("RESPONSE", response);
         if(!response.success){
             yield put(setData({ errorModalInfo : { showModal : true, message : "Error in creating post", title : "Success" } }));
@@ -87,7 +93,9 @@ function* createPostSaga(action){
 
 function* getAllPostsSaga(action){
     try{
+        yield put(setData({ loading : { show : true } }));
         let response = yield call(getApiCall, Api.apiToGetAllPosts);
+        yield put(setData({ loading : { show : false } }));
         console.log("RESPONSE", response);
         if(!response.success){
             yield put(setData({ errorModalInfo : { showModal : true, message : "Error in reteriving posts", title : "Success" } }));
@@ -124,8 +132,9 @@ function* updateUserDetails(action){
         let url = Api.apiToUpdateUserInfo;
         url = url.replace('{id}', userData._id);
         userData = {...userData, ...action.userData};
-        console.log("USERDATA", userData, url);
+        yield put(setData({ loading : { show : true } }));
         let response = yield call(putApiCall, url, userData);
+        yield put(setData({ loading : { show : false } }));
         console.log("RESPONSE", response);
         if(response.success){
             let userInfo = response.body;
@@ -144,7 +153,9 @@ function* getUserDetailSaga(action){
     try{
         let url = Api.apiToGetUserInfo;
         url = url.replace('{id}', action.id);
+        yield put(setData({ loading : { show : true } }));
         let response = yield call(getApiCall, url);
+        yield put(setData({ loading : { show : false } }));
         console.log("RESPONSE", response);
         if(!response.success){
             yield put(setData({ errorModalInfo : { showModal : true, message : "Error in reteriving userInfo", title : "Success" } }));
@@ -156,7 +167,6 @@ function* getUserDetailSaga(action){
         alert(JSON.stringify(err));
     }
 }
-
 
 const mySaga = [
     takeLatest( REGISTER_USER_INFO, registerUserInfoSaga ),

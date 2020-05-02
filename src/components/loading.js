@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Dimensions, StatusBar, ActivityIndicator, Text, StyleSheet } from 'react-native';
-import { setData } from "./../redux/action";
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import { Color } from '../global/util';

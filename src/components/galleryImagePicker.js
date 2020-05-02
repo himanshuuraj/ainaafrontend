@@ -2,9 +2,14 @@ import React, {Component} from 'react';
 import { ImagePicker } from 'expo';
 import { Touch, Text } from "./../ui-kit";
 import { uploadOnAWSRequest } from "./../global/request";
+import { useDispatch, useSelector } from 'react-redux';
+import { setData } from "./../redux/action";
 
 
 export default () => {
+
+    const dispatch = useDispatch()
+    const setDataAction = (arg) => dispatch(setData(arg))
 
     _pickImage = async () => {
         try{
@@ -33,14 +38,17 @@ export default () => {
         });
         console.log(data);
         try{
+          setDataAction({ loading : { show : true }, cameraModal : { show : false }});
           let response = await uploadOnAWSRequest(data);
           console.log(response, "Response");
+          setDataAction({ loading : { show : false } })
           if(response.success){
             console.log(response.message);
           }else{
               
           }
         }catch(err){
+            setDataAction({ loading : { show : false } })
             console.log(err, "ERROR");
         }
     }
