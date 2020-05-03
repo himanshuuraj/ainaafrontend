@@ -23,7 +23,7 @@ export default props => {
   let allPosts = useSelector(state => state.testReducer.allPosts) || []
   const setDataAction = (arg) => dispatch(setData(arg))
 
-  let userInfo = useSelector(state => state.testReducer.userInfo) || [];
+  let userInfo = useSelector(state => state.testReducer.userInfo) || {};
   
   getAwsImageUrl = (imageUrl) => {
     let imageList = this.state.imageList;
@@ -64,6 +64,7 @@ export default props => {
   }
 
   createPost = () => {
+    console.log(userInfo.profilePic, "USERINFO");
     return (
       <TouchableOpacity style={{ height : 50, borderWidth : StyleSheet.hairlineWidth, borderColor : 'black', flexDirection : 'row', backgroundColor : '#fff',
             marginVertical : 16, borderRadius : 8, alignItems : 'center', justifyContent : 'flex-start', paddingLeft : 8 }}

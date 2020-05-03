@@ -79,13 +79,11 @@ function* createPostSaga(action){
         post["jnv"] = userInfo.jnv && userInfo.jnv.area;
         yield put(setData({ loading : { show : true } }));
         let response = yield call(postApiCall, Api.apiToCreatePost, post);
-        yield put(setData({ loading : { show : false } }));
         console.log("RESPONSE", response);
         if(!response.success){
-            yield put(setData({ errorModalInfo : { showModal : true, message : "Error in creating post", title : "Success" } }));
+            yield put(setData({ errorModalInfo : { showModal : true, message : "Error in creating post", title : "Success" }, loading : { show : false } }));
         }else{
-            yield put(setData({ postModal : { show : false } }));
-            yield put(setData({ errorModalInfo : { showModal : true, message : "Post created Successfully", title : "Success" } }));
+            yield put(setData({ errorModalInfo : { showModal : true, message : "Post created Successfully", title : "Success" }, loading : { show : false }, postModal : { show : false } }));
             Actions.home();
         }
     }catch(err){
@@ -157,12 +155,11 @@ function* getUserDetailSaga(action){
         url = url.replace('{id}', action.id);
         yield put(setData({ loading : { show : true } }));
         let response = yield call(getApiCall, url);
-        yield put(setData({ loading : { show : false } }));
-        console.log("RESPONSE", response);
+        // console.log("RESPONSE", response);
         if(!response.success){
-            yield put(setData({ errorModalInfo : { showModal : true, message : "Error in reteriving userInfo", title : "Success" } }));
+            yield put(setData({ errorModalInfo : { showModal : true, message : "Error in reteriving userInfo", title : "Success" }, loading : { show : false } }));
         }else{
-            yield put(setData({ userInfo : response.body }));
+            yield put(setData({ userInfo : JSON.parse(JSON.stringify(response.body)), loading : { show : false } }));
             yield call(AsyncStorage.setItem, 'userInfo', JSON.stringify(response.body));
         }
     }catch(err){

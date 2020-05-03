@@ -35,11 +35,17 @@ export default () => {
     useEffect(() => {
         this.getJnvList();
         this.getBloodGroupList();
-        this.getCityAndStateList()
+        this.getCityAndStateList();
+        this.getUserDetails();
     }, []);
 
     const dispatch = useDispatch()
     const setDataAction = (arg) => dispatch(setData(arg))
+    getUserDetails = async () => {
+        let userInfo = await AsyncStorage.getItem('userInfo');
+        userInfo = JSON.parse(userInfo);
+        dispatch(getUserDetail(userInfo._id))
+    }
 
     getJnvList = () => {
         var dailyPricesRef = dbRef.child('jnvList/');

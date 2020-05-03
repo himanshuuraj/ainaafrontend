@@ -83,8 +83,8 @@ export default props => {
   onMount = async() => {
     let userInfo = await AsyncStorage.getItem('userInfo');
     userInfo = JSON.parse(userInfo);
-    // dispatch(getUserDetail(userInfo._id));
     dispatchStateAction({ field : "userInfo", value : userInfo });
+    setDataAction({ loadedImageUrl : userInfo.profilePic });
   } 
 
   hideShowPickArea = () => setDataAction({ pickJNV : { show : false } })
