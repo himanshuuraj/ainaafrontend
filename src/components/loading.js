@@ -35,7 +35,7 @@ class Loading extends Component {
                 }}>
                     <ActivityIndicator size="large" color={Color.themeColor} />
                     <Text style={{ marginTop : 10, fontSize : 18, color : Color.themeColor }}>
-                        Please wait ....
+                        LOADING ....
                     </Text>
                 </View>
             </View>
