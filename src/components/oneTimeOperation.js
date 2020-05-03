@@ -30,11 +30,12 @@ var firebaseConfig = {
   firebase.initializeApp(firebaseConfig);
   var dbRef = firebase.database().ref();
 
-export default props => {
+export default () => {
 
     useEffect(() => {
         this.getJnvList();
         this.getBloodGroupList();
+        this.getCityAndStateList()
     }, []);
 
     const dispatch = useDispatch()
@@ -55,6 +56,22 @@ export default props => {
         dailyPricesRef.once('value', (data) => {
            let bloodGroupList = data.val();
            setDataAction({ bloodGroupList });
+        }).catch(() => {
+            // alert("OOPS something went wrong");
+        });
+    }
+
+    getCityAndStateList = () => {
+        var dailyPricesRef = dbRef.child('stateAndCity/');
+        dailyPricesRef.once('value', (data) => {
+           let stateAndCity = data.val();
+           let cityList = [];
+           let stateList = [];
+           for (let key in stateAndCity){
+                cityList.push(...stateAndCity[key]);
+                stateList.push({ id : key, name : key});
+           }
+           setDataAction({ cityList, stateList });
         }).catch(() => {
             // alert("OOPS something went wrong");
         });

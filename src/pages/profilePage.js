@@ -52,6 +52,10 @@ export default props => {
 
   const [jnvSearchModal, setJnvSearchModal] = useState(false);
   const [bloodGroupSearchModal, setBloodGroupSearchModal] = useState(false);
+  const [permanentCitySearchModal, setPermanentCitySearchModal] = useState(false);
+  const [permanentStateSearchModal, setPermanentStateSearchModal] = useState(false);
+  const [currentCitySearchModal, setCurrentCitySearchModal] = useState(false);
+  const [currentStateSearchModal, setCurrentStateSearchModal] = useState(false);
 
   const dispatch = useDispatch()
   const setDataAction = (arg) => dispatch(setData(arg))
@@ -60,6 +64,8 @@ export default props => {
   let profilePic = useSelector(state => state.testReducer.loadedImageUrl);
   let jnvList = useSelector(state => state.testReducer.jnvList) || [];
   let bloodGroupList = useSelector(state => state.testReducer.bloodGroupList) || [];
+  let cityList = useSelector(state => state.testReducer.cityList) || [];
+  let stateList = useSelector(state => state.testReducer.stateList) || [];
 
   useEffect(() => {
     this.onMount();
@@ -86,10 +92,6 @@ export default props => {
   formOnChangeText = (field, value) => {
     dispatchStateAction({ field, value });
   }
-
-  selectedArea = value => {
-    dispatchStateAction({ field : "jnv", value });
-  }
   
   permanentAddress = () => {
     return (
@@ -109,13 +111,21 @@ export default props => {
             onChangeText={this.formOnChangeText} name={'permanentAddress.landmark'}
             value={state.permanentAddress.landmark}/>
           <Text t={'City'} />
-          <TextInput ml nl={2} uc={"#bbb"} ph="Delhi" pl={16} pb={4}
+          <Touch onPress={() => { setPermanentCitySearchModal(true) }}>
+            <TextInput ml nl={2} uc={"#bbb"} ph="Katihar" pl={16} editable={false}
+              value={state.permanentAddress.city}/>
+          </Touch>
+          {/* <TextInput ml nl={2} uc={"#bbb"} ph="Delhi" pl={16} pb={4}
             onChangeText={this.formOnChangeText} name={'permanentAddress.city'}
-            value={state.permanentAddress.city}/>
+            value={state.permanentAddress.city}/> */}
           <Text t={'State'} />
-          <TextInput ml nl={2} uc={"#bbb"} ph="Bihar" pl={16} pb={4}
+          <Touch onPress={() => { setPermanentStateSearchModal(true) }}>
+            <TextInput ml nl={2} uc={"#bbb"} ph="Bihar" pl={16} editable={false}
+              value={state.permanentAddress.state}/>
+          </Touch>
+          {/* <TextInput ml nl={2} uc={"#bbb"} ph="Bihar" pl={16} pb={4}
             onChangeText={this.formOnChangeText} name={'permanentAddress.state'}
-            value={state.permanentAddress.state}/>
+            value={state.permanentAddress.state}/> */}
           <Text t={'Pincode'} />
           <TextInput ml nl={2} uc={"#bbb"} ph="560035" pl={16} pb={4} keyboardType='numeric'
             onChangeText={this.formOnChangeText} name={'permanentAddress.pincode'}
@@ -143,13 +153,21 @@ export default props => {
             onChangeText={this.formOnChangeText} name={'currentAddress.landmark'}
             value={state.currentAddress.landmark}/>
           <Text t={'City'} />
-          <TextInput ml nl={2} uc={"#bbb"} ph="Delhi" pl={16} pb={4}
+          <Touch onPress={() => { setCurrentCitySearchModal(true) }}>
+            <TextInput ml nl={2} uc={"#bbb"} ph="Katihar" pl={16} editable={false}
+              value={state.currentAddress.city}/>
+          </Touch>
+          {/* <TextInput ml nl={2} uc={"#bbb"} ph="Katiher" pl={16} pb={4}
             onChangeText={this.formOnChangeText} name={'currentAddress.city'}
-            value={state.currentAddress.city}/>
+            value={state.currentAddress.city}/> */}
           <Text t={'State'} />
-          <TextInput ml nl={2} uc={"#bbb"} ph="Bihar" pl={16} pb={4}
+          <Touch onPress={() => { setCurrentStateSearchModal(true) }}>
+            <TextInput ml nl={2} uc={"#bbb"} ph="Bihar" pl={16} editable={false}
+              value={state.currentAddress.state}/>
+          </Touch>
+          {/* <TextInput ml nl={2} uc={"#bbb"} ph="Bihar" pl={16} pb={4}
             onChangeText={this.formOnChangeText} name={'currentAddress.state'}
-            value={state.currentAddress.state}/>
+            value={state.currentAddress.state}/> */}
           <Text t={'Pincode'} />
           <TextInput ml nl={2} uc={"#bbb"} ph="560035" pl={16} pb={4} keyboardType='numeric'
             onChangeText={this.formOnChangeText} name={'currentAddress.pincode'}
@@ -223,7 +241,7 @@ export default props => {
             <Touch onPress={() => { setBloodGroupSearchModal(true) }}>
               <TextInput ml nl={2} uc={"#bbb"} ph="B+" pl={16} editable={false}
                 name={'bloodGroup.name'} value={state.bloodGroup.name}/>
-              </Touch>
+            </Touch>
           </View>
   }
 
@@ -285,9 +303,34 @@ export default props => {
     else if(name == "bloodGroup"){
       setBloodGroupSearchModal(false);
     }
+    else if(name == "currentCity"){
+      setCurrentCitySearchModal(false);
+    }
+    else if(name == "currentState"){
+      setCurrentStateSearchModal(false);
+    }
+    else if(name == "permanentCity"){
+      setPermanentCitySearchModal(false);
+    }
+    else if(name == "permanentState"){
+      setPermanentStateSearchModal(false);
+    }
   }
 
   selectedItem = (name, value) => {
+    if(name == "permanentState"){
+      name = "permanentAddress.state";
+      value = value.name;
+    }else if(name == "permanentCity"){
+      name = "permanentAddress.city";
+      value = value.name;
+    }else if(name == "currentState"){
+      name = "currentAddress.state";
+      value = value.name;
+    }else if(name == "currentCity"){
+      name = "currentAddress.city";
+      value = value.name;
+    }
     dispatchStateAction({ field: name, value });
   }
 
@@ -333,6 +376,14 @@ export default props => {
             itemList={jnvList} selectedItem={this.selectedItem}/>
         <SearchModal show={bloodGroupSearchModal} name={'bloodGroup'} closeSearchModal={this.closeSearchModal} 
             itemList={bloodGroupList} selectedItem={this.selectedItem}/>
+        <SearchModal show={permanentCitySearchModal} name={'permanentCity'} closeSearchModal={this.closeSearchModal} 
+            itemList={cityList} selectedItem={this.selectedItem}/>
+        <SearchModal show={permanentStateSearchModal} name={'permanentState'} closeSearchModal={this.closeSearchModal} 
+            itemList={stateList} selectedItem={this.selectedItem}/>
+        <SearchModal show={currentCitySearchModal} name={'currentCity'} closeSearchModal={this.closeSearchModal} 
+            itemList={cityList} selectedItem={this.selectedItem}/>
+        <SearchModal show={currentStateSearchModal} name={'currentState'} closeSearchModal={this.closeSearchModal} 
+            itemList={stateList} selectedItem={this.selectedItem}/>
       </Content>
     </Container>
   );
