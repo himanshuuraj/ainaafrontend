@@ -11,33 +11,14 @@ import {
 } from "../global/util";
 import { useDispatch, useSelector } from 'react-redux';
 import HeaderSection from "./../components/header";
-import JNVList from "./../components/jnvList";
 import { setData, updateUserDetails, getUserDetail } from "./../redux/action";
 import { Text, View, TextInput, Image, Touch, SearchModal } from './../ui-kit';
-
-let itemList = [
-  {
-      id : "araria",
-      name : "JNV Araria"
-  },
-  {
-      id : "katihar",
-      name : "JNV Katihar"
-  },
-  {
-      id : "purnea",
-      name : "JNV Purnea"
-  },
-  {
-      id : "araria",
-      name : "JNV Araria"
-  }
-];
 
 const initialState = {
   currentAddress: {},
   permanentAddress: {},
   jnv : {},
+  bloodGroup : {}
 }
 
 const reducer = (state, { field, value }) => {
@@ -70,13 +51,15 @@ export default props => {
   const [state, dispatchStateAction] = useReducer(reducer, initialState);
 
   const [jnvSearchModal, setJnvSearchModal] = useState(false);
+  const [bloodGroupSearchModal, setBloodGroupSearchModal] = useState(false);
 
   const dispatch = useDispatch()
   const setDataAction = (arg) => dispatch(setData(arg))
 
   let userInfo = useSelector(state => state.testReducer.userInfo) || [];
   let profilePic = useSelector(state => state.testReducer.loadedImageUrl);
-  let jnvList = useSelector(state => state.testReducer.jnvList);
+  let jnvList = useSelector(state => state.testReducer.jnvList) || [];
+  let bloodGroupList = useSelector(state => state.testReducer.bloodGroupList) || [];
 
   useEffect(() => {
     this.onMount();
@@ -202,7 +185,7 @@ export default props => {
             <Text t={'Navodaya Name'} />
             <Touch onPress={() => { setJnvSearchModal(true) }}>
               <TextInput ml nl={2} uc={"#bbb"} ph="JNV Katihar" pl={16} editable={false}
-                name={'jnv.area'} value={state.jnv.name}/>
+                name={'jnv.name'} value={state.jnv.name}/>
             </Touch>
             <Text t={'Admission Year'}/>
             <TextInput ml nl={2} uc={"#bbb"} ph="2012" pl={16}
@@ -237,9 +220,10 @@ export default props => {
   bloodGroup = () => {
     return <View style={{ ...viewObj }}>
             <Text style={{ ...textObj }} t={'Blood Group'} />
-            <TextInput ml nl={2} uc={"#bbb"} ph="B+" pl={16} pb={2} h={40} mt={4}
-              onChangeText={this.formOnChangeText} name={'bloodGroup'}
-              value={state.bloodGroup}/>
+            <Touch onPress={() => { setBloodGroupSearchModal(true) }}>
+              <TextInput ml nl={2} uc={"#bbb"} ph="B+" pl={16} editable={false}
+                name={'bloodGroup.name'} value={state.bloodGroup.name}/>
+              </Touch>
           </View>
   }
 
@@ -298,6 +282,9 @@ export default props => {
     if(name == "jnv"){
       setJnvSearchModal(false);
     }
+    else if(name == "bloodGroup"){
+      setBloodGroupSearchModal(false);
+    }
   }
 
   selectedItem = (name, value) => {
@@ -344,7 +331,8 @@ export default props => {
         }
         <SearchModal show={jnvSearchModal} name={'jnv'} closeSearchModal={this.closeSearchModal} 
             itemList={jnvList} selectedItem={this.selectedItem}/>
-        {/* <JNVList hideShowPickArea={this.hideShowPickArea} selectedArea={this.selectedArea}/> */}
+        <SearchModal show={bloodGroupSearchModal} name={'bloodGroup'} closeSearchModal={this.closeSearchModal} 
+            itemList={bloodGroupList} selectedItem={this.selectedItem}/>
       </Content>
     </Container>
   );

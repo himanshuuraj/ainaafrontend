@@ -34,6 +34,7 @@ export default props => {
 
     useEffect(() => {
         this.getJnvList();
+        this.getBloodGroupList();
     }, []);
 
     const dispatch = useDispatch()
@@ -44,6 +45,16 @@ export default props => {
         dailyPricesRef.once('value', (data) => {
            let jnvList = data.val();
            setDataAction({ jnvList });
+        }).catch(() => {
+            // alert("OOPS something went wrong");
+        });
+    }
+
+    getBloodGroupList = () => {
+        var dailyPricesRef = dbRef.child('bloodGroup/');
+        dailyPricesRef.once('value', (data) => {
+           let bloodGroupList = data.val();
+           setDataAction({ bloodGroupList });
         }).catch(() => {
             // alert("OOPS something went wrong");
         });
