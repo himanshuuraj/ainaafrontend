@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Color } from '../global/util';
  
 let { width, height } = Dimensions.get('window');
-width = width;
 
 class Loading extends Component {
 
@@ -23,8 +22,7 @@ class Loading extends Component {
                 zIndex : 999,
                 justifyContent : 'center',
                 alignItems : 'center',
-                backgroundColor : "rgba(52, 52, 52, 0.6)",
-                marginTop : StatusBar.currentHeight
+                backgroundColor : "rgba(52, 52, 52, 0.6)"
             }}>
                 <View style={{
                     justifyContent : 'center',

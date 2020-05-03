@@ -13,7 +13,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import HeaderSection from "./../components/header";
 import JNVList from "./../components/jnvList";
 import { setData, updateUserDetails, getUserDetail } from "./../redux/action";
-import { Text, View, TextInput, Image, Touch } from './../ui-kit';
+import { Text, View, TextInput, Image, Touch, SearchModal } from './../ui-kit';
+
+let itemList = [
+  {
+      id : "araria",
+      name : "JNV Araria"
+  },
+  {
+      id : "katihar",
+      name : "JNV Katihar"
+  },
+  {
+      id : "purnea",
+      name : "JNV Purnea"
+  },
+  {
+      id : "araria",
+      name : "JNV Araria"
+  }
+];
 
 const initialState = {
   currentAddress: {},
@@ -49,6 +68,8 @@ const reducer = (state, { field, value }) => {
 export default props => {
 
   const [state, dispatchStateAction] = useReducer(reducer, initialState);
+
+  const [jnvSearchModal, setJnvSearchModal] = useState(true);
 
   const dispatch = useDispatch()
   const setDataAction = (arg) => dispatch(setData(arg))
@@ -178,9 +199,9 @@ export default props => {
         <Text style={{ ...textObj }} t={'Navodaya Details'} />
           <View ph={8} pt={16} pb={4}>
             <Text t={'Navodaya Name'} />
-            <Touch onPress={() => { setDataAction({ pickJNV : { show : true } }) }}>
+            <Touch onPress={() => { setJnvSearchModal(true) }}>
               <TextInput ml nl={2} uc={"#bbb"} ph="JNV Katihar" pl={16} editable={false}
-                onChangeText={this.formOnChangeText} name={'jnv.area'} value={state.jnv.area}/>
+                name={'jnv.area'} value={state.jnv.name}/>
             </Touch>
             <Text t={'Admission Year'}/>
             <TextInput ml nl={2} uc={"#bbb"} ph="2012" pl={16}
@@ -272,6 +293,16 @@ export default props => {
     )
   }
 
+  closeSearchModal = name => {
+    if(name == "jnv"){
+      setJnvSearchModal(false);
+    }
+  }
+
+  selectedItem = (name, value) => {
+    dispatchStateAction({ field: name, value });
+  }
+
   return (
     <Container>
       <HeaderSection title={'Profile'} />
@@ -310,7 +341,9 @@ export default props => {
         {
           this.updateUI()
         }
-        <JNVList hideShowPickArea={this.hideShowPickArea} selectedArea={this.selectedArea}/>
+        <SearchModal show={jnvSearchModal} name={'jnv'} closeSearchModal={this.closeSearchModal} 
+            itemList={itemList} selectedItem={this.selectedItem}/>
+        {/* <JNVList hideShowPickArea={this.hideShowPickArea} selectedArea={this.selectedArea}/> */}
       </Content>
     </Container>
   );
