@@ -96,7 +96,7 @@ class Registeration extends Component {
           }}>
             <KeyboardAvoidingView behavior={Platform.select({android: "padding", ios: 'padding'})}
             enabled>
-            <ImageLogoComponent/>
+              <ImageLogoComponent register/>
               <LoginFormComponent onSubmit={this.onSubmit} updateData={this.updateData} screenType="registeration"/>
               <RegisterationComponent screenType="registeration"/>
             </KeyboardAvoidingView>

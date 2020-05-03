@@ -2,13 +2,14 @@ import React from 'react';
 import { TextInput } from 'react-native';
 
 export default (props) => {
-    let { ml, nl, uc, pl, ph, h, mt, style, name, value, onChangeText, ...rest} = props
+    let { ml, nl, uc, pl, ph, h, mt, pb, style, name, value, onChangeText, ...rest} = props
 
     let st = { 
       ...{
         paddingLeft : pl ? pl : undefined,
         height : h ? h : undefined,
-        marginTop : mt ? mt : undefined
+        marginTop : mt ? mt : undefined,
+        paddingBottom : pb ? pb : undefined
       }, ...style};
 
     return (

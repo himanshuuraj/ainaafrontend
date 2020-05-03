@@ -6,7 +6,7 @@ import {View} from "./../ui-kit";
 export default props => {
     return (
            <View h={getHeight(16)} w={'100%'} jc ai style={{
-             marginTop : getHeight(8),
+             marginTop : getHeight(!props.register ? 16 : 8),
              marginBottom : getHeight(2)
            }}>
               <Image source={require("./../images/ainaa.png")}

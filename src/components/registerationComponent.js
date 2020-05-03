@@ -55,7 +55,7 @@ export default class RegisterationComponent extends Component {
   render() {
     return (
       <React.Fragment>
-        { this.props.screenType !== "forgotPassword" &&
+        {/* { this.props.screenType !== "forgotPassword" &&
             <OrWithComponent/>
         }
         { this.props.screenType !== "forgotPassword" && (
@@ -105,7 +105,7 @@ export default class RegisterationComponent extends Component {
               </TouchableOpacity>
           </View>
           )  
-        }
+        } */}
           <View style={{
             width : "100%",
             flexDirection : "row",

@@ -115,17 +115,11 @@ export default props => {
             <TextInput ml nl={2} uc={"#bbb"} ph="Katihar" pl={16} editable={false}
               value={state.permanentAddress.city}/>
           </Touch>
-          {/* <TextInput ml nl={2} uc={"#bbb"} ph="Delhi" pl={16} pb={4}
-            onChangeText={this.formOnChangeText} name={'permanentAddress.city'}
-            value={state.permanentAddress.city}/> */}
           <Text t={'State'} />
           <Touch onPress={() => { setPermanentStateSearchModal(true) }}>
             <TextInput ml nl={2} uc={"#bbb"} ph="Bihar" pl={16} editable={false}
               value={state.permanentAddress.state}/>
           </Touch>
-          {/* <TextInput ml nl={2} uc={"#bbb"} ph="Bihar" pl={16} pb={4}
-            onChangeText={this.formOnChangeText} name={'permanentAddress.state'}
-            value={state.permanentAddress.state}/> */}
           <Text t={'Pincode'} />
           <TextInput ml nl={2} uc={"#bbb"} ph="560035" pl={16} pb={4} keyboardType='numeric'
             onChangeText={this.formOnChangeText} name={'permanentAddress.pincode'}
@@ -157,17 +151,11 @@ export default props => {
             <TextInput ml nl={2} uc={"#bbb"} ph="Katihar" pl={16} editable={false}
               value={state.currentAddress.city}/>
           </Touch>
-          {/* <TextInput ml nl={2} uc={"#bbb"} ph="Katiher" pl={16} pb={4}
-            onChangeText={this.formOnChangeText} name={'currentAddress.city'}
-            value={state.currentAddress.city}/> */}
           <Text t={'State'} />
           <Touch onPress={() => { setCurrentStateSearchModal(true) }}>
             <TextInput ml nl={2} uc={"#bbb"} ph="Bihar" pl={16} editable={false}
               value={state.currentAddress.state}/>
           </Touch>
-          {/* <TextInput ml nl={2} uc={"#bbb"} ph="Bihar" pl={16} pb={4}
-            onChangeText={this.formOnChangeText} name={'currentAddress.state'}
-            value={state.currentAddress.state}/> */}
           <Text t={'Pincode'} />
           <TextInput ml nl={2} uc={"#bbb"} ph="560035" pl={16} pb={4} keyboardType='numeric'
             onChangeText={this.formOnChangeText} name={'currentAddress.pincode'}
@@ -187,7 +175,7 @@ export default props => {
             onChangeText={this.formOnChangeText} name={'phoneNumber'} keyboardType='numeric'
             value={state.phoneNumber}/>
             <Text t={'Email'} />
-            <TextInput uc={"#bbb"} ph="hraj3116@gmail.com" pl={16}
+            <TextInput uc={"#bbb"} ph="hraj3116@gmail.com" pb={4} pl={16}
             onChangeText={this.formOnChangeText} name={'email'}
             value={state.email}/>
           </View>
@@ -239,7 +227,7 @@ export default props => {
     return <View style={{ ...viewObj }}>
             <Text style={{ ...textObj }} t={'Blood Group'} />
             <Touch onPress={() => { setBloodGroupSearchModal(true) }}>
-              <TextInput ml nl={2} uc={"#bbb"} ph="B+" pl={16} editable={false}
+              <TextInput ml nl={2} uc={"#bbb"} ph="B+" pl={16} editable={false} h={'100%'}
                 name={'bloodGroup.name'} value={state.bloodGroup.name}/>
             </Touch>
           </View>
