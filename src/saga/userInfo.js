@@ -104,4 +104,8 @@ var sendNotification = (users, userInfo) => {
             });
 }
 
+var getJnvList = () => {
+    
+}
+
 export { registerUserInfo, createPost, getAllPosts, sendNotification, getAllUser, signIn }

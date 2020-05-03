@@ -21,6 +21,7 @@ import CommentModal from "./src/components/commentModal";
 import JNVList from "./src/components/jnvList";
 import CameraModal from "./src/components/cameraModal";
 import Camera from "./src/components/camera";
+import OneTimeOperation from "./src/components/oneTimeOperation";
 
 export default class App extends React.Component {
 
@@ -109,7 +110,8 @@ export default class App extends React.Component {
         <CommentModal />
         <ErrorModal />
         <CameraModal />
-        <Camera type="camera" showCamera={false}/>
+        <Camera />
+        <OneTimeOperation />
       </Provider>
     );
   }

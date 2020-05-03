@@ -69,13 +69,14 @@ export default props => {
 
   const [state, dispatchStateAction] = useReducer(reducer, initialState);
 
-  const [jnvSearchModal, setJnvSearchModal] = useState(true);
+  const [jnvSearchModal, setJnvSearchModal] = useState(false);
 
   const dispatch = useDispatch()
   const setDataAction = (arg) => dispatch(setData(arg))
 
   let userInfo = useSelector(state => state.testReducer.userInfo) || [];
-  let profilePic = useSelector(state => state.testReducer.loadedImageUrl)
+  let profilePic = useSelector(state => state.testReducer.loadedImageUrl);
+  let jnvList = useSelector(state => state.testReducer.jnvList);
 
   useEffect(() => {
     this.onMount();
@@ -342,7 +343,7 @@ export default props => {
           this.updateUI()
         }
         <SearchModal show={jnvSearchModal} name={'jnv'} closeSearchModal={this.closeSearchModal} 
-            itemList={itemList} selectedItem={this.selectedItem}/>
+            itemList={jnvList} selectedItem={this.selectedItem}/>
         {/* <JNVList hideShowPickArea={this.hideShowPickArea} selectedArea={this.selectedArea}/> */}
       </Content>
     </Container>
